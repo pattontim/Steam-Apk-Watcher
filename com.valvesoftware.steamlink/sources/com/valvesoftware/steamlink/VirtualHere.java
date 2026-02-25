@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import org.libsdl.app.SDL;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class VirtualHere {
     private static final String TAG = "VirtualHere";
     private static final String VHDAEMON_PACKAGE = "com.virtualhere.androidserver";
@@ -33,7 +33,7 @@ public class VirtualHere {
     private final Messenger mMessenger = new Messenger(new IncomingHandler());
     private final ServiceConnection mConnection = new ServiceConnection() { // from class: com.valvesoftware.steamlink.VirtualHere.1
         @Override // android.content.ServiceConnection
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) throws RemoteException {
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             VirtualHere.this.mService = new Messenger(iBinder);
             try {
                 Log.v(VirtualHere.TAG, "Service connected, registering as client");
@@ -105,7 +105,7 @@ public class VirtualHere {
         return sInstance;
     }
 
-    public static void release(VirtualHere virtualHere) throws RemoteException {
+    public static void release(VirtualHere virtualHere) {
         VirtualHere virtualHere2 = sInstance;
         if (virtualHere == virtualHere2) {
             int i = sInstanceRefCount - 1;
@@ -185,7 +185,7 @@ public class VirtualHere {
         this.mContext = context;
     }
 
-    private void close() throws RemoteException {
+    private void close() {
         disconnectService();
     }
 
@@ -213,7 +213,7 @@ public class VirtualHere {
         }
     }
 
-    private void disconnectService() throws RemoteException {
+    private void disconnectService() {
         if (isConnected()) {
             if (this.mService != null) {
                 try {
@@ -231,7 +231,7 @@ public class VirtualHere {
         }
     }
 
-    public void startSharing(int i) throws RemoteException {
+    public void startSharing(int i) {
         this.mIsSharing = true;
         this.mNumLicensedDevices = i;
         if (!isConnected() || this.mService == null) {
@@ -249,7 +249,7 @@ public class VirtualHere {
         }
     }
 
-    public void stopSharing() throws RemoteException {
+    public void stopSharing() {
         this.mIsSharing = false;
         if (!isConnected() || this.mService == null) {
             return;

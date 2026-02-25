@@ -3,7 +3,7 @@ package org.libsdl.app;
 import android.app.Activity;
 import android.content.Context;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class SDL {
     protected static Activity mContext;
 

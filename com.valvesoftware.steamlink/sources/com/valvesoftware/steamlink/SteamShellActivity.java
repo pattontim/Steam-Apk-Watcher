@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.InputDevice;
@@ -18,7 +17,7 @@ import org.libsdl.app.SDLControllerManager;
 import org.qtproject.qt5.android.bindings.QtActivity;
 import org.qtproject.qt5.android.bindings.QtApplication;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class SteamShellActivity extends QtActivity {
     public static final String TAG = "SteamShell";
     private HIDDeviceManager mHIDDeviceManager;
@@ -71,7 +70,7 @@ public class SteamShellActivity extends QtActivity {
     }
 
     @Override // org.qtproject.qt5.android.bindings.QtActivity, android.app.Activity
-    protected void onDestroy() throws RemoteException {
+    protected void onDestroy() {
         super.onDestroy();
         stopActivity();
         HIDDeviceManager hIDDeviceManager = this.mHIDDeviceManager;
@@ -183,7 +182,7 @@ public class SteamShellActivity extends QtActivity {
         System.exit(0);
     }
 
-    public void startVRLink(String str, String str2) throws InterruptedException {
+    public void startVRLink(String str, String str2) {
         this.mStreamingInProgress = true;
         Intent intent = new Intent();
         intent.addCategory("com.oculus.intent.category.VR");

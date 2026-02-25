@@ -4,8 +4,8 @@ import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.View;
 
-/* compiled from: SDLControllerManager.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLControllerManager.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLGenericMotionListener_API14 implements View.OnGenericMotionListener {
     protected static final int SDL_PEN_DEVICE_TYPE_DIRECT = 1;
     protected static final int SDL_PEN_DEVICE_TYPE_INDIRECT = 2;

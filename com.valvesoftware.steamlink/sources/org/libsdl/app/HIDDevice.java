@@ -2,7 +2,7 @@ package org.libsdl.app;
 
 import android.hardware.usb.UsbDevice;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 interface HIDDevice {
     void close();
 

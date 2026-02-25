@@ -4,7 +4,7 @@ import android.os.Build;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class SDLControllerManager {
     private static final String TAG = "SDLControllerManager";
     protected static SDLHapticHandler mHapticHandler;

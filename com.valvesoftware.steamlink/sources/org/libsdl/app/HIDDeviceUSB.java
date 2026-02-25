@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.Locale;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 class HIDDeviceUSB implements HIDDevice {
     private static final String TAG = "hidapi";
     protected UsbDeviceConnection mConnection;

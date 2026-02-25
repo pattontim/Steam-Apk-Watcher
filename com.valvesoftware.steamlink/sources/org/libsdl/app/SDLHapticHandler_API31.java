@@ -7,8 +7,8 @@ import android.os.VibratorManager;
 import android.view.InputDevice;
 import org.libsdl.app.SDLHapticHandler;
 
-/* compiled from: SDLControllerManager.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLControllerManager.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLHapticHandler_API31 extends SDLHapticHandler {
     SDLHapticHandler_API31() {
     }

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.widget.EditText;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 class SDLInputConnection extends BaseInputConnection {
     protected String mCommittedText;
     protected EditText mEditText;

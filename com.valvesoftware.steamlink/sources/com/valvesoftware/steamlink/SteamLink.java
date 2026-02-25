@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -16,13 +15,12 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.libsdl.app.SDL;
 import org.libsdl.app.SDLActivity;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class SteamLink extends SDLActivity {
     private static final String ARGS_KEY = "args";
     private static final String FORCE_LOW_LATENCY_KEY = "forceLowLatencyVideo";
@@ -63,7 +61,7 @@ public class SteamLink extends SDLActivity {
     public native void videoSurfaceDestroyed();
 
     @Override // org.libsdl.app.SDLActivity, android.app.Activity
-    protected void onCreate(Bundle bundle) throws IllegalAccessException, NoSuchMethodException, ClassNotFoundException, SecurityException, IllegalArgumentException, InvocationTargetException {
+    protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setWindowStyle(true);
         if (mLayout != null && useVideoSurface()) {
@@ -77,7 +75,7 @@ public class SteamLink extends SDLActivity {
     }
 
     @Override // org.libsdl.app.SDLActivity, android.app.Activity
-    protected void onDestroy() throws InterruptedException, RemoteException {
+    protected void onDestroy() {
         super.onDestroy();
         VirtualHere virtualHere = this.mVirtualHere;
         if (virtualHere != null) {
@@ -212,7 +210,7 @@ public class SteamLink extends SDLActivity {
         }
     }
 
-    public void createVideoSurface() throws IllegalAccessException, NoSuchMethodException, ClassNotFoundException, SecurityException, IllegalArgumentException, InvocationTargetException {
+    public void createVideoSurface() {
         Display defaultDisplay = ((WindowManager) getApplication().getSystemService("window")).getDefaultDisplay();
         this.m_nDisplayWidth = defaultDisplay.getWidth();
         this.m_nDisplayHeight = defaultDisplay.getHeight();

@@ -2,7 +2,7 @@ package com.getkeepsafe.relinker.elf;
 
 import java.io.IOException;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public interface Elf {
 
     public static abstract class DynamicStructure {

@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class ApkLibraryInstaller implements ReLinker.LibraryInstaller {
     private static final int COPY_BUFFER_SIZE = 4096;
     private static final int MAX_TRIES = 5;
@@ -43,7 +43,7 @@ public class ApkLibraryInstaller implements ReLinker.LibraryInstaller {
         }
     }
 
-    private ZipFileInZipEntry findAPKWithLibrary(Context context, String[] strArr, String str, ReLinkerInstance reLinkerInstance) throws IOException {
+    private ZipFileInZipEntry findAPKWithLibrary(Context context, String[] strArr, String str, ReLinkerInstance reLinkerInstance) {
         String[] strArrSourceDirectories = sourceDirectories(context);
         int length = strArrSourceDirectories.length;
         char c = 0;
@@ -243,7 +243,7 @@ public class ApkLibraryInstaller implements ReLinker.LibraryInstaller {
             int i = inputStream.read(bArr);
             if (i != -1) {
                 outputStream.write(bArr, 0, i);
-                j += i;
+                j += (long) i;
             } else {
                 outputStream.flush();
                 return j;
@@ -251,7 +251,7 @@ public class ApkLibraryInstaller implements ReLinker.LibraryInstaller {
         }
     }
 
-    private void closeSilently(Closeable closeable) throws IOException {
+    private void closeSilently(Closeable closeable) {
         if (closeable != null) {
             try {
                 closeable.close();

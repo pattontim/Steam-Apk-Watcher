@@ -4,8 +4,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Build;
 
-/* compiled from: SDLActivity.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLActivity.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLClipboardHandler implements ClipboardManager.OnPrimaryClipChangedListener {
     protected ClipboardManager mClipMgr;
 

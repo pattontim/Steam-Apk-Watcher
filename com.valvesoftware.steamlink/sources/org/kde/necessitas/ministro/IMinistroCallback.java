@@ -8,7 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.RemoteException;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public interface IMinistroCallback extends IInterface {
     public static final String DESCRIPTOR = "org.kde.necessitas.ministro.IMinistroCallback";
 

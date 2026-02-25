@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class SDLDummyEdit extends View implements View.OnKeyListener {
 
-    /* renamed from: ic */
+    /* JADX INFO: renamed from: ic */
     InputConnection f4ic;
     int input_type;
 

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class ReLinkerInstance {
     private static final String LIB_DIR = "lib";
     protected boolean force;

@@ -3,7 +3,7 @@ package com.getkeepsafe.relinker;
 import android.content.Context;
 import java.io.File;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class ReLinker {
 
     public interface LibraryInstaller {

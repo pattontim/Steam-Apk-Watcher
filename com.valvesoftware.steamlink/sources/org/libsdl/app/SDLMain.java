@@ -3,14 +3,14 @@ package org.libsdl.app;
 import android.os.Process;
 import android.util.Log;
 
-/* compiled from: SDLActivity.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLActivity.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLMain implements Runnable {
     SDLMain() {
     }
 
     @Override // java.lang.Runnable
-    public void run() throws SecurityException, IllegalArgumentException {
+    public void run() {
         try {
             Process.setThreadPriority(-4);
         } catch (Exception e) {

@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class ElfParser implements Closeable, Elf {
     private final int MAGIC = 1179403647;
     private final FileChannel channel;
@@ -139,7 +139,7 @@ public class ElfParser implements Closeable, Elf {
 
     protected long readWord(ByteBuffer byteBuffer, long j) throws IOException {
         read(byteBuffer, j, 4);
-        return byteBuffer.getInt() & 4294967295L;
+        return ((long) byteBuffer.getInt()) & 4294967295L;
     }
 
     protected int readHalf(ByteBuffer byteBuffer, long j) throws IOException {
@@ -161,7 +161,7 @@ public class ElfParser implements Closeable, Elf {
             if (i2 == -1) {
                 throw new EOFException();
             }
-            j2 += i2;
+            j2 += (long) i2;
         }
         byteBuffer.position(0);
     }

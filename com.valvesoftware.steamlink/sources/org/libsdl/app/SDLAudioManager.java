@@ -8,7 +8,7 @@ import android.os.Build;
 import android.os.Process;
 import android.util.Log;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 class SDLAudioManager {
     protected static final String TAG = "SDLAudio";
     private static AudioDeviceCallback mAudioDeviceCallback;
@@ -96,7 +96,7 @@ class SDLAudioManager {
         }
     }
 
-    static void audioSetThreadPriority(boolean z, int i) throws SecurityException, IllegalArgumentException {
+    static void audioSetThreadPriority(boolean z, int i) {
         try {
             if (z) {
                 Thread.currentThread().setName("SDLAudioC" + i);

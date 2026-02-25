@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class HIDDeviceManager {
     private static final String ACTION_USB_PERMISSION = "org.libsdl.app.USB_PERMISSION";
     private static final String TAG = "hidapi";
@@ -171,10 +171,10 @@ public class HIDDeviceManager {
     }
 
     private boolean isXbox360Controller(UsbDevice usbDevice, UsbInterface usbInterface) {
-        int[] iArr = {121, 1103, 1118, 1133, 1390, 1699, 1848, 2047, 3695, 3853, 4152, 4553, 4779, 5168, 5227, 5426, 5604, 5678, 5769, 6473, 7085, 8406, 9414, 11298, 11720, 39046};
+        int[] iArr = {121, 1103, 1118, 1133, 1390, 1699, 1848, 2047, 3695, 3853, 4152, 4553, 4779, 5168, 5227, 5426, 5604, 5678, 5769, 6473, 7085, 8406, 9414, 11298, 11720, 14295, 39046};
         if (usbInterface.getInterfaceClass() == 255 && usbInterface.getInterfaceSubclass() == 93 && (usbInterface.getInterfaceProtocol() == 1 || usbInterface.getInterfaceProtocol() == 129)) {
             int vendorId = usbDevice.getVendorId();
-            for (int i = 0; i < 26; i++) {
+            for (int i = 0; i < 27; i++) {
                 if (vendorId == iArr[i]) {
                     return true;
                 }
@@ -362,7 +362,10 @@ public class HIDDeviceManager {
     }
 
     boolean isSteamController(BluetoothDevice bluetoothDevice) {
-        return (bluetoothDevice == null || bluetoothDevice.getName() == null || !bluetoothDevice.getName().equals("SteamController") || (bluetoothDevice.getType() & 2) == 0) ? false : true;
+        if (bluetoothDevice == null || bluetoothDevice.getName() == null || (bluetoothDevice.getType() & 2) == 0) {
+            return false;
+        }
+        return bluetoothDevice.getName().equals("SteamController") || bluetoothDevice.getName().startsWith("Steam Ctrl");
     }
 
     private void close() {

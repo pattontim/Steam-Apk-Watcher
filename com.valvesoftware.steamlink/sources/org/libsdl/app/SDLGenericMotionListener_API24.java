@@ -3,8 +3,8 @@ package org.libsdl.app;
 import android.os.Build;
 import android.view.MotionEvent;
 
-/* compiled from: SDLControllerManager.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLControllerManager.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLGenericMotionListener_API24 extends SDLGenericMotionListener_API14 {
     private boolean mRelativeModeEnabled;
 

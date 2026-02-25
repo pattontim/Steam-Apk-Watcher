@@ -4,8 +4,8 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import org.libsdl.app.SDLHapticHandler;
 
-/* compiled from: SDLControllerManager.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLControllerManager.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLHapticHandler_API26 extends SDLHapticHandler {
     SDLHapticHandler_API26() {
     }

@@ -2,8 +2,8 @@ package org.libsdl.app;
 
 import android.view.InputDevice;
 
-/* compiled from: SDLControllerManager.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLControllerManager.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLGenericMotionListener_API29 extends SDLGenericMotionListener_API26 {
     SDLGenericMotionListener_API29() {
     }

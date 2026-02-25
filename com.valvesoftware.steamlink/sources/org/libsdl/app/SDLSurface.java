@@ -23,7 +23,7 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import org.libsdl.app.SDLActivity;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, View.OnApplyWindowInsetsListener, View.OnKeyListener, View.OnTouchListener, SensorEventListener, ScaleGestureDetector.OnScaleGestureListener {
     protected Display mDisplay;
     protected float mHeight;
@@ -112,35 +112,31 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, V
                     f = displayMetrics.densityDpi / 160.0f;
                 } catch (Exception unused) {
                     f = 1.0f;
-                    int i6 = i4;
-                    int i7 = i5;
-                    synchronized (SDLActivity.getContext()) {
-                    }
                 }
             } catch (Exception unused2) {
                 i5 = i3;
                 f = 1.0f;
-                int i62 = i4;
-                int i72 = i5;
+                int i6 = i4;
+                int i7 = i5;
                 synchronized (SDLActivity.getContext()) {
                 }
             }
         } catch (Exception unused3) {
             i4 = i2;
         }
-        int i622 = i4;
-        int i722 = i5;
+        int i62 = i4;
+        int i72 = i5;
         synchronized (SDLActivity.getContext()) {
             SDLActivity.getContext().notifyAll();
         }
         Log.v("SDL", "Window size: " + i2 + "x" + i3);
-        Log.v("SDL", "Device size: " + i622 + "x" + i722);
-        SDLActivity.nativeSetScreenResolution(i2, i3, i622, i722, f, this.mDisplay.getRefreshRate());
+        Log.v("SDL", "Device size: " + i62 + "x" + i72);
+        SDLActivity.nativeSetScreenResolution(i2, i3, i62, i72, f, this.mDisplay.getRefreshRate());
         SDLActivity.onNativeResize();
         int requestedOrientation = SDLActivity.mSingleton.getRequestedOrientation();
         boolean z = requestedOrientation == 1 || requestedOrientation == 7 ? this.mWidth > this.mHeight : !(!(requestedOrientation == 0 || requestedOrientation == 6) || this.mWidth >= this.mHeight);
         if (z) {
-            if (Math.max(this.mWidth, this.mHeight) / Math.min(this.mWidth, this.mHeight) < 1.2d) {
+            if (((double) Math.max(this.mWidth, this.mHeight)) / ((double) Math.min(this.mWidth, this.mHeight)) < 1.2d) {
                 Log.v("SDL", "Don't skip on such aspect-ratio. Could be a square resolution.");
                 z = false;
             }

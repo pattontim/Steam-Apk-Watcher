@@ -14,12 +14,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-/* compiled from: SDLControllerManager.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLControllerManager.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLJoystickHandler {
     private final ArrayList<SDLJoystick> mJoysticks = new ArrayList<>();
 
-    /* compiled from: SDLControllerManager.java */
+    /* JADX INFO: compiled from: SDLControllerManager.java */
     static class SDLJoystick {
         ArrayList<InputDevice.MotionRange> axes;
         String desc;
@@ -33,7 +33,7 @@ class SDLJoystickHandler {
         }
     }
 
-    /* compiled from: SDLControllerManager.java */
+    /* JADX INFO: compiled from: SDLControllerManager.java */
     static class RangeComparator implements Comparator<InputDevice.MotionRange> {
         RangeComparator() {
         }
@@ -164,11 +164,9 @@ class SDLJoystickHandler {
     }
 
     protected synchronized SDLJoystick getJoystick(int i) {
-        Iterator<SDLJoystick> it = this.mJoysticks.iterator();
-        while (it.hasNext()) {
-            SDLJoystick next = it.next();
-            if (next.device_id == i) {
-                return next;
+        for (SDLJoystick sDLJoystick : this.mJoysticks) {
+            if (sDLJoystick.device_id == i) {
+                return sDLJoystick;
             }
         }
         return null;

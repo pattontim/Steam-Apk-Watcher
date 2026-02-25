@@ -45,7 +45,7 @@ import java.util.Hashtable;
 import java.util.Locale;
 import org.qtproject.qt5.android.QtNative;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class SDLActivity extends Activity implements View.OnSystemUiVisibilityChangeListener {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     protected static final int COMMAND_CHANGE_TITLE = 1;
@@ -268,7 +268,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         return new String[]{"SDL3", "main"};
     }
 
-    public void loadLibraries() throws SecurityException, UnsatisfiedLinkError, NullPointerException {
+    public void loadLibraries() {
         for (String str : getLibraries()) {
             SDL.loadLibrary(str, this);
         }
@@ -558,7 +558,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     @Override // android.app.Activity
-    protected void onDestroy() throws InterruptedException {
+    protected void onDestroy() {
         Log.v(TAG, "onDestroy()");
         HIDDeviceManager hIDDeviceManager = mHIDDeviceManager;
         if (hIDDeviceManager != null) {
@@ -903,10 +903,10 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if (Build.MANUFACTURER.equals("MINIX") && Build.MODEL.equals("NEO-U1")) {
             return true;
         }
-        if (Build.MANUFACTURER.equals("Amlogic") && Build.MODEL.equals("X96-W")) {
-            return true;
+        if (Build.MANUFACTURER.equals("Amlogic")) {
+            return Build.MODEL.startsWith("TV") || Build.MODEL.equals("X96-W") || Build.MODEL.equals("A95X-R1");
         }
-        return Build.MANUFACTURER.equals("Amlogic") && Build.MODEL.startsWith("TV");
+        return false;
     }
 
     public static boolean isVRHeadset() {
@@ -920,8 +920,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             return 0.0d;
         }
         context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        double d = displayMetrics.widthPixels / displayMetrics.xdpi;
-        double d2 = displayMetrics.heightPixels / displayMetrics.ydpi;
+        double d = ((double) displayMetrics.widthPixels) / ((double) displayMetrics.xdpi);
+        double d2 = ((double) displayMetrics.heightPixels) / ((double) displayMetrics.ydpi);
         return Math.sqrt((d * d) + (d2 * d2));
     }
 
@@ -975,17 +975,17 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     static class ShowTextInputTask implements Runnable {
         static final int HEIGHT_PADDING = 15;
 
-        /* renamed from: h */
+        /* JADX INFO: renamed from: h */
         public int f0h;
         public int input_type;
 
-        /* renamed from: w */
+        /* JADX INFO: renamed from: w */
         public int f1w;
 
-        /* renamed from: x */
+        /* JADX INFO: renamed from: x */
         public int f2x;
 
-        /* renamed from: y */
+        /* JADX INFO: renamed from: y */
         public int f3y;
 
         public ShowTextInputTask(int i, int i2, int i3, int i4, int i5) {

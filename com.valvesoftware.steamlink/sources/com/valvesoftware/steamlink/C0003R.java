@@ -1,10 +1,10 @@
 package com.valvesoftware.steamlink;
 
-/* renamed from: com.valvesoftware.steamlink.R */
-/* loaded from: classes.dex */
+/* JADX INFO: renamed from: com.valvesoftware.steamlink.R */
+/* JADX INFO: loaded from: classes.dex */
 public final class C0003R {
 
-    /* renamed from: com.valvesoftware.steamlink.R$array */
+    /* JADX INFO: renamed from: com.valvesoftware.steamlink.R$array */
     public static final class array {
         public static final int bundled_in_assets = 2130771968;
         public static final int bundled_libs = 2130771969;
@@ -16,7 +16,7 @@ public final class C0003R {
         }
     }
 
-    /* renamed from: com.valvesoftware.steamlink.R$layout */
+    /* JADX INFO: renamed from: com.valvesoftware.steamlink.R$layout */
     public static final class layout {
         public static final int main = 2130837504;
 
@@ -24,7 +24,7 @@ public final class C0003R {
         }
     }
 
-    /* renamed from: com.valvesoftware.steamlink.R$mipmap */
+    /* JADX INFO: renamed from: com.valvesoftware.steamlink.R$mipmap */
     public static final class mipmap {
         public static final int ic_banner = 2130903040;
         public static final int ic_launcher = 2130903041;
@@ -37,7 +37,7 @@ public final class C0003R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.steamlink.R$xml */
+    /* JADX INFO: renamed from: com.valvesoftware.steamlink.R$xml */
     public static final class xml {
 
         /* JADX INFO: Added by JADX */

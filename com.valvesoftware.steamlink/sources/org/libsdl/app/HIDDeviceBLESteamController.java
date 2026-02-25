@@ -14,29 +14,37 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDevice {
     private static final int CHROMEBOOK_CONNECTION_CHECK_INTERVAL = 10000;
+    private static final int D0G_BLE2_PID = 4358;
     private static final String TAG = "hidapi";
     private static final int TRANSPORT_AUTO = 0;
     private static final int TRANSPORT_BREDR = 1;
     private static final int TRANSPORT_LE = 2;
+    private static final int TRITON_BLE_PID = 4867;
     private BluetoothDevice mDevice;
     private int mDeviceId;
     private boolean mIsChromebook;
     private boolean mIsRegistered;
     private HIDDeviceManager mManager;
     static final UUID steamControllerService = UUID.fromString("100F6C32-1735-4313-B402-38567131E5F3");
-    static final UUID inputCharacteristic = UUID.fromString("100F6C33-1735-4313-B402-38567131E5F3");
+    static final UUID inputCharacteristicD0G = UUID.fromString("100F6C33-1735-4313-B402-38567131E5F3");
+    static final UUID inputCharacteristicTriton = UUID.fromString("100F6C7A-1735-4313-B402-38567131E5F3");
     static final UUID reportCharacteristic = UUID.fromString("100F6C34-1735-4313-B402-38567131E5F3");
     private static final byte[] enterValveMode = {-64, -121, 3, 8, 7, 0};
     private boolean mIsConnected = false;
     private boolean mIsReconnecting = false;
     private boolean mFrozen = false;
     GattOperation mCurrentOperation = null;
+    private int mProductId = -1;
+    private HashMap<Integer, BluetoothGattCharacteristic> mOutputReportChars = new HashMap<>();
     private LinkedList<GattOperation> mOperations = new LinkedList<>();
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private BluetoothGatt mGatt = connectGatt();
@@ -48,11 +56,6 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
     @Override // org.libsdl.app.HIDDevice
     public UsbDevice getDevice() {
         return null;
-    }
-
-    @Override // org.libsdl.app.HIDDevice
-    public int getProductId() {
-        return 4358;
     }
 
     @Override // org.libsdl.app.HIDDevice
@@ -292,11 +295,28 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
             if (bluetoothGattService.getUuid().equals(steamControllerService)) {
                 Log.v(TAG, "Found Valve steam controller service " + bluetoothGattService.getUuid());
                 for (BluetoothGattCharacteristic bluetoothGattCharacteristic : bluetoothGattService.getCharacteristics()) {
-                    if (bluetoothGattCharacteristic.getUuid().equals(inputCharacteristic)) {
-                        Log.v(TAG, "Found input characteristic");
-                        if (bluetoothGattCharacteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")) != null) {
-                            enableNotification(bluetoothGattCharacteristic.getUuid());
+                    if (bluetoothGattCharacteristic.getUuid().equals(inputCharacteristicTriton)) {
+                        Log.v(TAG, "Found Triton input characteristic");
+                        this.mProductId = TRITON_BLE_PID;
+                    } else if (bluetoothGattCharacteristic.getUuid().equals(inputCharacteristicD0G)) {
+                        Log.v(TAG, "Found D0G input characteristic");
+                        this.mProductId = D0G_BLE2_PID;
+                    } else {
+                        Matcher matcher = Pattern.compile("100F6C([0-9A-Z]{2})", 2).matcher(bluetoothGattCharacteristic.getUuid().toString());
+                        if (matcher.find()) {
+                            try {
+                                int i = Integer.parseInt(matcher.group(1), 16) - 53;
+                                if (i >= 128) {
+                                    Log.v(TAG, "Found Triton output report 0x" + Integer.toString(i, 16));
+                                    this.mOutputReportChars.put(Integer.valueOf(i), bluetoothGattCharacteristic);
+                                }
+                            } catch (NumberFormatException e) {
+                                Log.w(TAG, "Could not parse report characteristic " + bluetoothGattCharacteristic.getUuid().toString() + ": " + e.toString());
+                            }
                         }
+                    }
+                    if (bluetoothGattCharacteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")) != null) {
+                        enableNotification(bluetoothGattCharacteristic.getUuid());
                     }
                 }
                 return true;
@@ -403,6 +423,9 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                 this.mGatt = connectGatt(false);
                 return;
             }
+            if (getProductId() == TRITON_BLE_PID) {
+                this.mGatt.requestMtu(517);
+            }
             probeService(this);
         }
     }
@@ -427,7 +450,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
 
     @Override // android.bluetooth.BluetoothGattCallback
     public void onCharacteristicChanged(BluetoothGatt bluetoothGatt, BluetoothGattCharacteristic bluetoothGattCharacteristic) {
-        if (!bluetoothGattCharacteristic.getUuid().equals(inputCharacteristic) || this.mFrozen) {
+        if (!bluetoothGattCharacteristic.getUuid().equals(getInputCharacteristic()) || this.mFrozen) {
             return;
         }
         this.mManager.HIDDeviceInputReport(getId(), bluetoothGattCharacteristic.getValue());
@@ -435,19 +458,49 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
 
     @Override // android.bluetooth.BluetoothGattCallback
     public void onDescriptorWrite(BluetoothGatt bluetoothGatt, BluetoothGattDescriptor bluetoothGattDescriptor, int i) {
+        HIDDeviceBLESteamController hIDDeviceBLESteamController;
         BluetoothGattCharacteristic characteristic;
         BluetoothGattCharacteristic characteristic2 = bluetoothGattDescriptor.getCharacteristic();
-        if (characteristic2.getUuid().equals(inputCharacteristic) && (characteristic = characteristic2.getService().getCharacteristic(reportCharacteristic)) != null) {
+        if (!characteristic2.getUuid().equals(getInputCharacteristic()) || (characteristic = characteristic2.getService().getCharacteristic(reportCharacteristic)) == null) {
+            hIDDeviceBLESteamController = this;
+        } else if (getProductId() == TRITON_BLE_PID) {
+            Log.v(TAG, "Registering Triton Steam Controller with ID: " + getId());
+            hIDDeviceBLESteamController = this;
+            hIDDeviceBLESteamController.mManager.HIDDeviceConnected(hIDDeviceBLESteamController.getId(), hIDDeviceBLESteamController.getIdentifier(), hIDDeviceBLESteamController.getVendorId(), hIDDeviceBLESteamController.getProductId(), hIDDeviceBLESteamController.getSerialNumber(), hIDDeviceBLESteamController.getVersion(), hIDDeviceBLESteamController.getManufacturerName(), hIDDeviceBLESteamController.getProductName(), 0, 0, 0, 0, true);
+            hIDDeviceBLESteamController.setRegistered();
+        } else {
+            hIDDeviceBLESteamController = this;
             Log.v(TAG, "Writing report characteristic to enter valve mode");
             characteristic.setValue(enterValveMode);
             bluetoothGatt.writeCharacteristic(characteristic);
         }
-        finishCurrentGattOperation();
+        hIDDeviceBLESteamController.finishCurrentGattOperation();
     }
 
     @Override // org.libsdl.app.HIDDevice
     public int getId() {
         return this.mDeviceId;
+    }
+
+    @Override // org.libsdl.app.HIDDevice
+    public int getProductId() {
+        int i = this.mProductId;
+        if (i > 0) {
+            return i;
+        }
+        if (this.mDevice.getName().startsWith("Steam Ctrl")) {
+            this.mProductId = TRITON_BLE_PID;
+        } else {
+            this.mProductId = D0G_BLE2_PID;
+        }
+        return this.mProductId;
+    }
+
+    private UUID getInputCharacteristic() {
+        if (getProductId() == TRITON_BLE_PID) {
+            return inputCharacteristicTriton;
+        }
+        return inputCharacteristicD0G;
     }
 
     @Override // org.libsdl.app.HIDDevice
@@ -469,18 +522,29 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
     public int writeReport(byte[] bArr, boolean z) {
         if (!isRegistered()) {
             Log.e(TAG, "Attempted writeReport before Steam Controller is registered!");
-            if (!this.mIsConnected) {
-                return -1;
+            if (this.mIsConnected) {
+                probeService(this);
             }
-            probeService(this);
             return -1;
         }
         if (z) {
             writeCharacteristic(reportCharacteristic, Arrays.copyOfRange(bArr, 1, bArr.length - 1));
             return bArr.length;
         }
-        writeCharacteristic(reportCharacteristic, bArr);
-        return bArr.length;
+        if (getProductId() == D0G_BLE2_PID) {
+            writeCharacteristic(reportCharacteristic, bArr);
+            return bArr.length;
+        }
+        if (bArr.length > 0) {
+            byte b = bArr[0];
+            BluetoothGattCharacteristic bluetoothGattCharacteristic = this.mOutputReportChars.get(Integer.valueOf(b));
+            if (bluetoothGattCharacteristic != null) {
+                writeCharacteristic(bluetoothGattCharacteristic.getUuid(), Arrays.copyOfRange(bArr, 1, bArr.length - 1));
+                return bArr.length;
+            }
+            Log.w(TAG, "Got report write request for unknown report type 0x" + Integer.toString(b, 16));
+        }
+        return -1;
     }
 
     @Override // org.libsdl.app.HIDDevice

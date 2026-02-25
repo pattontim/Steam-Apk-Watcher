@@ -4,15 +4,15 @@ import android.os.Vibrator;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/* compiled from: SDLControllerManager.java */
-/* loaded from: classes.dex */
+/* JADX INFO: compiled from: SDLControllerManager.java */
+/* JADX INFO: loaded from: classes.dex */
 class SDLHapticHandler {
     private final ArrayList<SDLHaptic> mHaptics = new ArrayList<>();
 
     void rumble(int i, float f, float f2, int i2) {
     }
 
-    /* compiled from: SDLControllerManager.java */
+    /* JADX INFO: compiled from: SDLControllerManager.java */
     static class SDLHaptic {
         int device_id;
         String name;
@@ -87,11 +87,9 @@ class SDLHapticHandler {
     }
 
     protected synchronized SDLHaptic getHaptic(int i) {
-        Iterator<SDLHaptic> it = this.mHaptics.iterator();
-        while (it.hasNext()) {
-            SDLHaptic next = it.next();
-            if (next.device_id == i) {
-                return next;
+        for (SDLHaptic sDLHaptic : this.mHaptics) {
+            if (sDLHaptic.device_id == i) {
+                return sDLHaptic;
             }
         }
         return null;

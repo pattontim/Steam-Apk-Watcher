@@ -1,11 +1,11 @@
 package com.valvesoftware.steamlink;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public final class BuildConfig {
     public static final String APPLICATION_ID = "com.valvesoftware.steamlink";
     public static final String BUILD_TYPE = "release";
     public static final boolean DEBUG = false;
     public static final String FLAVOR = "steamlink";
-    public static final int VERSION_CODE = 5000300;
-    public static final String VERSION_NAME = "1.3.23";
+    public static final int VERSION_CODE = 5000301;
+    public static final String VERSION_NAME = "1.3.24";
 }

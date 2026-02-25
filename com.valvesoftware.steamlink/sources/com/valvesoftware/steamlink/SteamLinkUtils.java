@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import org.libsdl.app.SDL;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class SteamLinkUtils {
     public static final String TAG = "SteamLinkShell";
     static LinkedList<String> knownVendorLowLatencyOptions;
@@ -153,7 +153,7 @@ public class SteamLinkUtils {
 
     public static String findBestDecoder(String str) {
         MediaCodecList mediaCodecList = new MediaCodecList(0);
-        LinkedList linkedList = new LinkedList();
+        LinkedList<MediaCodecInfo> linkedList = new LinkedList();
         for (MediaCodecInfo mediaCodecInfo : mediaCodecList.getCodecInfos()) {
             if (!mediaCodecInfo.isEncoder() && (Build.VERSION.SDK_INT < 29 || !mediaCodecInfo.isAlias())) {
                 for (String str2 : mediaCodecInfo.getSupportedTypes()) {
@@ -167,9 +167,7 @@ public class SteamLinkUtils {
             return null;
         }
         if (Build.VERSION.SDK_INT >= 30) {
-            Iterator it = linkedList.iterator();
-            while (it.hasNext()) {
-                MediaCodecInfo mediaCodecInfo2 = (MediaCodecInfo) it.next();
+            for (MediaCodecInfo mediaCodecInfo2 : linkedList) {
                 if (supportsKnownLowLatencyOption(mediaCodecInfo2, str)) {
                     Log.v(TAG, "Found codec with low-latency support: " + mediaCodecInfo2.getName());
                     return mediaCodecInfo2.getName();
