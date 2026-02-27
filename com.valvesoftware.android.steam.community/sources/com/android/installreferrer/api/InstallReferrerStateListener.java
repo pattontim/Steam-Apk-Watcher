@@ -1,6 +1,6 @@
 package com.android.installreferrer.api;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public interface InstallReferrerStateListener {
     void onInstallReferrerServiceDisconnected();
 

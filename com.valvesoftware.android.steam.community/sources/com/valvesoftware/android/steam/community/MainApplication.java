@@ -20,9 +20,9 @@ import java.util.List;
 import kotlin.Metadata;
 import kotlin.jvm.internal.Intrinsics;
 
-/* compiled from: MainApplication.kt */
+/* JADX INFO: compiled from: MainApplication.kt */
+/* JADX INFO: loaded from: classes3.dex */
 @Metadata(m995d1 = {"\u0000.\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\u0018\u00002\u00020\u00012\u00020\u0002B\u0007¢\u0006\u0004\b\u0003\u0010\u0004J\b\u0010\r\u001a\u00020\u000eH\u0016J\u0010\u0010\u000f\u001a\u00020\u000e2\u0006\u0010\u0010\u001a\u00020\u0011H\u0016R\u0014\u0010\u0005\u001a\u00020\u0006X\u0096\u0004¢\u0006\b\n\u0000\u001a\u0004\b\u0007\u0010\bR\u0014\u0010\t\u001a\u00020\n8VX\u0096\u0004¢\u0006\u0006\u001a\u0004\b\u000b\u0010\f¨\u0006\u0012"}, m996d2 = {"Lcom/valvesoftware/android/steam/community/MainApplication;", "Landroid/app/Application;", "Lcom/facebook/react/ReactApplication;", "<init>", "()V", "reactNativeHost", "Lcom/facebook/react/ReactNativeHost;", "getReactNativeHost", "()Lcom/facebook/react/ReactNativeHost;", "reactHost", "Lcom/facebook/react/ReactHost;", "getReactHost", "()Lcom/facebook/react/ReactHost;", "onCreate", "", "onConfigurationChanged", "newConfig", "Landroid/content/res/Configuration;", "app_release"}, m997k = 1, m998mv = {2, 0, 0}, m1000xi = 48)
-/* loaded from: classes3.dex */
 public final class MainApplication extends Application implements ReactApplication {
     private final ReactNativeHost reactNativeHost = new ReactNativeHostWrapper(this, new DefaultReactNativeHost(this) { // from class: com.valvesoftware.android.steam.community.MainApplication$reactNativeHost$1
         private final boolean isHermesEnabled;
@@ -53,7 +53,7 @@ public final class MainApplication extends Application implements ReactApplicati
         }
 
         @Override // com.facebook.react.defaults.DefaultReactNativeHost
-        /* renamed from: isNewArchEnabled, reason: from getter */
+        /* JADX INFO: renamed from: isNewArchEnabled, reason: from getter */
         protected boolean getIsNewArchEnabled() {
             return this.isNewArchEnabled;
         }

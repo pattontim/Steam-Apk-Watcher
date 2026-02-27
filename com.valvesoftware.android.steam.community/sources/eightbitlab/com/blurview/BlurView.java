@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class BlurView extends FrameLayout {
     private static final String TAG = "BlurView";
     BlurController blurController;

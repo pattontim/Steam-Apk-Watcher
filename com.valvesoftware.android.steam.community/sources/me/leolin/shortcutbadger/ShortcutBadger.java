@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.util.Log;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +25,7 @@ import me.leolin.shortcutbadger.impl.VivoHomeBadger;
 import me.leolin.shortcutbadger.impl.ZTEHomeBadger;
 import me.leolin.shortcutbadger.impl.ZukHomeBadger;
 
-/* loaded from: classes4.dex */
+/* JADX INFO: loaded from: classes4.dex */
 public final class ShortcutBadger {
     private static final List<Class<? extends Badger>> BADGERS;
     private static final String LOG_TAG = "ShortcutBadger";
@@ -96,16 +95,16 @@ public final class ShortcutBadger {
                     for (int i = 0; i < 3; i++) {
                         try {
                             Log.i(LOG_TAG, "Checking if platform supports badge counters, attempt " + String.format("%d/%d.", Integer.valueOf(i + 1), 3));
+                            if (initBadger(context)) {
+                                sShortcutBadger.executeBadge(context, sComponentName, 0);
+                                sIsBadgeCounterSupported = true;
+                                Log.i(LOG_TAG, "Badge counter is supported in this platform.");
+                                break;
+                            }
+                            message = "Failed to initialize the badge counter.";
                         } catch (Exception e) {
                             message = e.getMessage();
                         }
-                        if (initBadger(context)) {
-                            sShortcutBadger.executeBadge(context, sComponentName, 0);
-                            sIsBadgeCounterSupported = true;
-                            Log.i(LOG_TAG, "Badge counter is supported in this platform.");
-                            break;
-                        }
-                        message = "Failed to initialize the badge counter.";
                     }
                     if (sIsBadgeCounterSupported == null) {
                         Log.w(LOG_TAG, "Badge counter seems not supported for this platform: " + message);
@@ -117,7 +116,7 @@ public final class ShortcutBadger {
         return sIsBadgeCounterSupported.booleanValue();
     }
 
-    public static void applyNotification(Context context, Notification notification, int i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void applyNotification(Context context, Notification notification, int i) {
         if (Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
             try {
                 Object obj = notification.getClass().getDeclaredField("extraNotification").get(notification);
@@ -130,7 +129,7 @@ public final class ShortcutBadger {
         }
     }
 
-    private static boolean initBadger(Context context) throws IllegalAccessException, InstantiationException {
+    private static boolean initBadger(Context context) {
         Badger badgerNewInstance;
         Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
         if (launchIntentForPackage == null) {

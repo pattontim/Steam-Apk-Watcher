@@ -9,15 +9,14 @@ import android.content.pm.ResolveInfo;
 import android.os.Build;
 import expo.modules.notifications.service.NotificationsService;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import me.leolin.shortcutbadger.Badger;
 import me.leolin.shortcutbadger.ShortcutBadgeException;
 import me.leolin.shortcutbadger.util.BroadcastHelper;
 
+/* JADX INFO: loaded from: classes4.dex */
 @Deprecated
-/* loaded from: classes4.dex */
 public class XiaomiHomeBadger implements Badger {
     public static final String EXTRA_UPDATE_APP_COMPONENT_NAME = "android.intent.extra.update_application_component_name";
     public static final String EXTRA_UPDATE_APP_MSG_TEXT = "android.intent.extra.update_application_message_text";
@@ -25,7 +24,7 @@ public class XiaomiHomeBadger implements Badger {
     private ResolveInfo resolveInfo;
 
     @Override // me.leolin.shortcutbadger.Badger
-    public void executeBadge(Context context, ComponentName componentName, int i) throws IllegalAccessException, ShortcutBadgeException, NoSuchFieldException, InstantiationException, IllegalArgumentException, InvocationTargetException {
+    public void executeBadge(Context context, ComponentName componentName, int i) throws ShortcutBadgeException {
         Object objValueOf;
         Object objValueOf2 = "";
         try {
@@ -59,7 +58,7 @@ public class XiaomiHomeBadger implements Badger {
         }
     }
 
-    private void tryNewMiuiBadge(Context context, int i) throws IllegalAccessException, ShortcutBadgeException, IllegalArgumentException, InvocationTargetException {
+    private void tryNewMiuiBadge(Context context, int i) throws ShortcutBadgeException {
         if (this.resolveInfo == null) {
             Intent intent = new Intent("android.intent.action.MAIN");
             intent.addCategory("android.intent.category.HOME");

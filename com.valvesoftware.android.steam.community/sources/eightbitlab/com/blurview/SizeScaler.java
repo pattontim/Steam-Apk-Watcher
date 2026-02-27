@@ -1,6 +1,6 @@
 package eightbitlab.com.blurview;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class SizeScaler {
     private static final int ROUNDING_VALUE = 64;
     private final float scaleFactor;

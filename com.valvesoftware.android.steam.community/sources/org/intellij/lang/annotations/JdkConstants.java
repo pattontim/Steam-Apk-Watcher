@@ -1,7 +1,7 @@
 package org.intellij.lang.annotations;
 
+/* JADX INFO: loaded from: classes4.dex */
 @Deprecated
-/* loaded from: classes4.dex */
 public final class JdkConstants {
 
     public @interface AdjustableOrientation {

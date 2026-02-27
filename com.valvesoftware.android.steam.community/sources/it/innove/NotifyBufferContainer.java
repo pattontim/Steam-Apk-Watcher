@@ -2,7 +2,7 @@ package it.innove;
 
 import java.nio.ByteBuffer;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class NotifyBufferContainer {
     public ByteBuffer items;
 

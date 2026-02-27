@@ -9,7 +9,7 @@ import me.leolin.shortcutbadger.Badger;
 import me.leolin.shortcutbadger.ShortcutBadgeException;
 import me.leolin.shortcutbadger.util.BroadcastHelper;
 
-/* loaded from: classes4.dex */
+/* JADX INFO: loaded from: classes4.dex */
 public class NewHtcHomeBadger implements Badger {
     public static final String COUNT = "count";
     public static final String EXTRA_COMPONENT = "com.htc.launcher.extra.COMPONENT";

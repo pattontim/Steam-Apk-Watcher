@@ -22,13 +22,12 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.common.base.Ascii;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import kotlinx.coroutines.DebugKt;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 class BleManager extends NativeBleManagerSpec {
     private static final int ENABLE_REQUEST = 539;
     public static final String LOG_TAG = "RNBleManager";
@@ -378,7 +377,7 @@ class BleManager extends NativeBleManagerSpec {
 
     @Override // it.innove.NativeBleManagerSpec
     @ReactMethod
-    public void removeBond(String str, Callback callback) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void removeBond(String str, Callback callback) {
         Log.d(LOG_TAG, "Remove bond to: " + str);
         Peripheral peripheralRetrieveOrCreatePeripheral = retrieveOrCreatePeripheral(str);
         if (peripheralRetrieveOrCreatePeripheral == null) {

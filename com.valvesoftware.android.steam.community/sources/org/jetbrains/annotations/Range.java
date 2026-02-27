@@ -6,13 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/* JADX INFO: loaded from: classes4.dex */
 @Target({ElementType.TYPE_USE})
 @Documented
 @Retention(RetentionPolicy.CLASS)
-/* loaded from: classes4.dex */
 public @interface Range {
     long from();
 
-    /* renamed from: to */
+    /* JADX INFO: renamed from: to */
     long m1238to();
 }

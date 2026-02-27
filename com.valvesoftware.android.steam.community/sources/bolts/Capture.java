@@ -1,6 +1,6 @@
 package bolts;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class Capture<T> {
     private T value;
 

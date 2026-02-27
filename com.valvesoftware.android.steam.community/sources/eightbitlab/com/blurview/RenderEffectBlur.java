@@ -8,7 +8,7 @@ import android.graphics.RenderEffect;
 import android.graphics.RenderNode;
 import android.graphics.Shader;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class RenderEffectBlur implements BlurAlgorithm {
     private Context context;
     public BlurAlgorithm fallbackAlgorithm;

@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class Helper {
     public static WritableMap decodeProperties(BluetoothGattCharacteristic bluetoothGattCharacteristic) {
         WritableMap writableMapCreateMap = Arguments.createMap();

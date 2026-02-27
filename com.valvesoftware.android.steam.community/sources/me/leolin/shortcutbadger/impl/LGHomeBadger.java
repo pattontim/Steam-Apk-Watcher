@@ -9,8 +9,8 @@ import me.leolin.shortcutbadger.Badger;
 import me.leolin.shortcutbadger.ShortcutBadgeException;
 import me.leolin.shortcutbadger.util.BroadcastHelper;
 
+/* JADX INFO: loaded from: classes4.dex */
 @Deprecated
-/* loaded from: classes4.dex */
 public class LGHomeBadger implements Badger {
     private static final String INTENT_ACTION = "android.intent.action.BADGE_COUNT_UPDATE";
     private static final String INTENT_EXTRA_ACTIVITY_NAME = "badge_count_class_name";

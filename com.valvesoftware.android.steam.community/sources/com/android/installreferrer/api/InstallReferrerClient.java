@@ -5,7 +5,7 @@ import android.os.RemoteException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public abstract class InstallReferrerClient {
 
     public static final class Builder {
@@ -29,7 +29,7 @@ public abstract class InstallReferrerClient {
         public static final int DEVELOPER_ERROR = 3;
         public static final int FEATURE_NOT_SUPPORTED = 2;
 
-        /* renamed from: OK */
+        /* JADX INFO: renamed from: OK */
         public static final int f121OK = 0;
         public static final int PERMISSION_ERROR = 4;
         public static final int SERVICE_DISCONNECTED = -1;

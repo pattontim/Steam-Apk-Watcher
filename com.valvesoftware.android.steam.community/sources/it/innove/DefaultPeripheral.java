@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.Map;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class DefaultPeripheral extends Peripheral {
     private ScanRecord advertisingData;
     private ScanResult scanResult;

@@ -4,7 +4,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class UUIDHelper {
     public static final String UUID_BASE = "0000XXXX-0000-1000-8000-00805f9b34fb";
 

@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class DefaultScanManager extends ScanManager {
     private boolean isScanning;
     private final ScanCallback mScanCallback;
@@ -161,7 +161,7 @@ public class DefaultScanManager extends ScanManager {
                 }
 
                 @Override // java.lang.Thread, java.lang.Runnable
-                public void run() throws InterruptedException {
+                public void run() {
                     try {
                         Thread.sleep(i * 1000);
                     } catch (InterruptedException unused) {

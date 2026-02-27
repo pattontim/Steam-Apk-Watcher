@@ -1,7 +1,7 @@
 package org.intellij.lang.annotations;
 
-/* compiled from: PrintFormat.java */
-/* loaded from: classes4.dex */
+/* JADX INFO: compiled from: PrintFormat.java */
+/* JADX INFO: loaded from: classes4.dex */
 class PrintFormatPattern {
     private static final String ARG_INDEX = "(?:\\d+\\$)?";
     private static final String CONVERSION = "(?:[tT])?(?:[a-zA-Z%])";

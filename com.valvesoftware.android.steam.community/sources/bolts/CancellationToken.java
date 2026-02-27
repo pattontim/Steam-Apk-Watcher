@@ -3,7 +3,7 @@ package bolts;
 import java.util.Locale;
 import java.util.concurrent.CancellationException;
 
-/* loaded from: classes.dex */
+/* JADX INFO: loaded from: classes.dex */
 public class CancellationToken {
     private final CancellationTokenSource tokenSource;
 

@@ -38,7 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class ValveHelpersModule extends ReactContextBaseJavaModule {
     private static final String s_strSteamGuardStateFilenameBase = "Steamguard-";
     private ForwardingCookieHandler m_CookieHandler;
@@ -67,16 +67,16 @@ public class ValveHelpersModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void ComputeHMAC(String str, String str2, Promise promise) throws NoSuchAlgorithmException, InvalidKeyException {
+    public void ComputeHMAC(String str, String str2, Promise promise) {
         ComputeGenericHMAC(str, str2, promise, "HmacSHA1");
     }
 
     @ReactMethod
-    public void ComputeSHA256HMAC(String str, String str2, Promise promise) throws NoSuchAlgorithmException, InvalidKeyException {
+    public void ComputeSHA256HMAC(String str, String str2, Promise promise) {
         ComputeGenericHMAC(str, str2, promise, "HmacSHA256");
     }
 
-    private void ComputeGenericHMAC(String str, String str2, Promise promise, String str3) throws NoSuchAlgorithmException, InvalidKeyException {
+    private void ComputeGenericHMAC(String str, String str2, Promise promise, String str3) {
         try {
             byte[] bArrDecode = Base64.decode(str.getBytes("UTF-8"), 2);
             SecretKeySpec secretKeySpec = new SecretKeySpec(Base64.decode(str2.getBytes("UTF-8"), 2), str3);

@@ -24,7 +24,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.google.firebase.messaging.Constants;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class CompanionScanner {
     public static final String LOG_TAG = "RNBleManager_Companion";
     private static final int SELECT_DEVICE_REQUEST_CODE = 540;
@@ -123,7 +123,7 @@ public class CompanionScanner {
             }
 
             @Override // android.companion.CompanionDeviceManager.Callback
-            public void onDeviceFound(IntentSender intentSender) throws IntentSender.SendIntentException {
+            public void onDeviceFound(IntentSender intentSender) {
                 Log.d(CompanionScanner.LOG_TAG, "companion device found");
                 try {
                     CompanionScanner.this.reactContext.getCurrentActivity().startIntentSenderForResult(intentSender, CompanionScanner.SELECT_DEVICE_REQUEST_CODE, null, 0, 0, 0);

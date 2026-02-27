@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.json.JSONException;
 
-/* loaded from: classes3.dex */
+/* JADX INFO: loaded from: classes3.dex */
 public class Peripheral extends BluetoothGattCallback {
     private static final String CHARACTERISTIC_NOTIFICATION_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
     public static final int GATT_AUTH_FAIL = 137;
@@ -671,11 +671,6 @@ public class Peripheral extends BluetoothGattCallback {
         }
     }
 
-    /* JADX WARN: Removed duplicated region for block: B:50:0x0119  */
-    /* JADX WARN: Removed duplicated region for block: B:66:? A[RETURN, SYNTHETIC] */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
     private void setNotify(UUID uuid, UUID uuid2, Boolean bool, Callback callback) {
         BluetoothGatt bluetoothGatt;
         byte[] bArr;
@@ -736,17 +731,16 @@ public class Peripheral extends BluetoothGattCallback {
             z = characteristicNotification;
             Log.d(BleManager.LOG_TAG, "Exception in setNotify", e);
             characteristicNotification = z;
-            if (characteristicNotification) {
-            }
         }
         if (characteristicNotification) {
-            Iterator<Callback> it2 = this.registerNotifyCallbacks.iterator();
-            while (it2.hasNext()) {
-                it2.next().invoke("writeDescriptor failed for descriptor: " + descriptor.getUuid(), null);
-            }
-            this.registerNotifyCallbacks.clear();
-            completedCommand();
+            return;
         }
+        Iterator<Callback> it2 = this.registerNotifyCallbacks.iterator();
+        while (it2.hasNext()) {
+            it2.next().invoke("writeDescriptor failed for descriptor: " + descriptor.getUuid(), null);
+        }
+        this.registerNotifyCallbacks.clear();
+        completedCommand();
     }
 
     public void registerNotify(final UUID uuid, final UUID uuid2, final Integer num, final Callback callback) {
@@ -1132,14 +1126,14 @@ public class Peripheral extends BluetoothGattCallback {
     public void write(final UUID uuid, final UUID uuid2, final byte[] bArr, final Integer num, final Integer num2, final Callback callback, final int i) {
         enqueue(new Runnable() { // from class: it.innove.Peripheral$$ExternalSyntheticLambda8
             @Override // java.lang.Runnable
-            public final void run() throws Exception {
+            public final void run() {
                 this.f$0.lambda$write$17(callback, uuid, uuid2, i, bArr, num, num2);
             }
         });
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public /* synthetic */ void lambda$write$17(Callback callback, UUID uuid, UUID uuid2, int i, byte[] bArr, Integer num, Integer num2) throws Exception {
+    public /* synthetic */ void lambda$write$17(Callback callback, UUID uuid, UUID uuid2, int i, byte[] bArr, Integer num, Integer num2) {
         BluetoothGatt bluetoothGatt;
         boolean z;
         byte[] bArrCopyOfRange = null;
@@ -1301,7 +1295,7 @@ public class Peripheral extends BluetoothGattCallback {
         completedCommand();
     }
 
-    private BluetoothGattCharacteristic findWritableCharacteristic(BluetoothGattService bluetoothGattService, UUID uuid, int i) throws Exception {
+    private BluetoothGattCharacteristic findWritableCharacteristic(BluetoothGattService bluetoothGattService, UUID uuid, int i) {
         int i2 = i == 1 ? 4 : 8;
         try {
             if (bluetoothGattService == null) {

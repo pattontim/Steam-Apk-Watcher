@@ -3,7 +3,7 @@ package org.aomedia.avif.android;
 import android.graphics.Bitmap;
 import java.nio.ByteBuffer;
 
-/* loaded from: classes4.dex */
+/* JADX INFO: loaded from: classes4.dex */
 public class AvifDecoder {
     private boolean alphaPresent;
     private long decoder;

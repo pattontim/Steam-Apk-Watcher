@@ -1,11 +1,11 @@
 package com.valvesoftware.android.steam.community;
 
-/* renamed from: com.valvesoftware.android.steam.community.R */
-/* loaded from: classes3.dex */
+/* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R */
+/* JADX INFO: loaded from: classes3.dex */
 public final class C2851R {
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$anim */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$anim */
     public static final class anim {
 
         /* JADX INFO: Added by JADX */
@@ -241,7 +241,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$animator */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$animator */
     public static final class animator {
 
         /* JADX INFO: Added by JADX */
@@ -348,7 +348,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$array */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$array */
     public static final class array {
 
         /* JADX INFO: Added by JADX */
@@ -374,7 +374,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$attr */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$attr */
     public static final class attr {
 
         /* JADX INFO: Added by JADX */
@@ -4224,7 +4224,7 @@ public final class C2851R {
         public static final int zOrderOnTop = 2130969857;
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$bool */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$bool */
     public static final class bool {
         public static int portrait_only = 2131034118;
 
@@ -4253,7 +4253,7 @@ public final class C2851R {
         }
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$color */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$color */
     public static final class color {
         public static int navigation_bar = 2131100432;
         public static int splashscreen_background = 2131100450;
@@ -6690,7 +6690,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$dimen */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$dimen */
     public static final class dimen {
 
         /* JADX INFO: Added by JADX */
@@ -9241,11 +9241,11 @@ public final class C2851R {
         public static final int tooltip_y_offset_touch = 2131166032;
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$drawable */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$drawable */
     public static final class drawable {
         public static int __node_modules_reactnavigation_stack_src_views_assets_backicon = 2131230766;
 
-        /* renamed from: __node_modules_reactnavigation_stack_src_views_assets_backiconmask */
+        /* JADX INFO: renamed from: __node_modules_reactnavigation_stack_src_views_assets_backiconmask */
         public static int f601xd7b0d7a4 = 2131230767;
         public static int background = 2131230904;
         public static int ic_launcher = 2131231037;
@@ -10485,7 +10485,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$font */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$font */
     public static final class font {
 
         /* JADX INFO: Added by JADX */
@@ -10493,7 +10493,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$id */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$id */
     public static final class id {
 
         /* JADX INFO: Added by JADX */
@@ -12339,7 +12339,7 @@ public final class C2851R {
         public static final int zoom = 2131362405;
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$integer */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$integer */
     public static final class integer {
         public static int react_native_dev_server_port = 2131427400;
 
@@ -12570,7 +12570,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$interpolator */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$interpolator */
     public static final class interpolator {
 
         /* JADX INFO: Added by JADX */
@@ -12629,7 +12629,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$layout */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$layout */
     public static final class layout {
 
         /* JADX INFO: Added by JADX */
@@ -13083,7 +13083,7 @@ public final class C2851R {
         public static final int support_simple_spinner_dropdown_item = 2131558549;
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$mipmap */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$mipmap */
     public static final class mipmap {
         public static int ic_launcher = 2131689472;
         public static int ic_launcher_round = 2131689473;
@@ -13094,7 +13094,7 @@ public final class C2851R {
     }
 
     /* JADX INFO: Added by JADX */
-    /* renamed from: com.valvesoftware.android.steam.community.R$plurals */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$plurals */
     public static final class plurals {
 
         /* JADX INFO: Added by JADX */
@@ -13107,7 +13107,7 @@ public final class C2851R {
         public static final int mtrl_badge_content_description = 2131755010;
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$raw */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$raw */
     public static final class raw {
         public static int __packages_sharedmobileui_src_fonts_motivasansbold = 2131820544;
         public static int __packages_sharedmobileui_src_fonts_motivasansbolditalic = 2131820545;
@@ -13130,7 +13130,7 @@ public final class C2851R {
         }
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$string */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$string */
     public static final class string {
         public static int app_name = 2131886109;
         public static int default_web_client_id = 2131886179;
@@ -14133,7 +14133,7 @@ public final class C2851R {
         }
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$style */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$style */
     public static final class style {
         public static int AppTheme = 2131951629;
         public static int Theme_App_SplashScreen = 2131952194;
@@ -17760,7 +17760,7 @@ public final class C2851R {
         }
     }
 
-    /* renamed from: com.valvesoftware.android.steam.community.R$xml */
+    /* JADX INFO: renamed from: com.valvesoftware.android.steam.community.R$xml */
     public static final class xml {
         public static int network_security_config = 2132082691;
 

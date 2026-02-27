@@ -1,5 +1,5 @@
 package org.intellij.lang.annotations;
 
-/* loaded from: classes4.dex */
+/* JADX INFO: loaded from: classes4.dex */
 public @interface Identifier {
 }
