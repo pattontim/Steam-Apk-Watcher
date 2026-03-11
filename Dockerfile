@@ -21,7 +21,7 @@ RUN pacman -Syu --noconfirm \
     perl-xml-xpath
 RUN python -m venv /data/.venv && \
 . /data/.venv/bin/activate && \
-pip install --upgrade git+https://github.com/P1sec/hermes-dec
+pip install --upgrade hermes-dec
 
 ENV PATH=/bin/vendor_perl:/data/.venv/bin:$PATH
 COPY --from=build /root/.cargo/bin/* /usr/local/bin/
