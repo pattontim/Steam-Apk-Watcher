@@ -154,16 +154,26 @@ public class SteamLinkUtils {
     public static String findBestDecoder(String str) {
         MediaCodecList mediaCodecList = new MediaCodecList(0);
         LinkedList<MediaCodecInfo> linkedList = new LinkedList();
+        if (Build.VERSION.SDK_INT < 29) {
+            Log.v(TAG, "Android version too old to find best decoder, just using system default.");
+            return null;
+        }
+        Log.v(TAG, "Finding best decoder for " + str);
         for (MediaCodecInfo mediaCodecInfo : mediaCodecList.getCodecInfos()) {
-            if (!mediaCodecInfo.isEncoder() && (Build.VERSION.SDK_INT < 29 || !mediaCodecInfo.isAlias())) {
-                for (String str2 : mediaCodecInfo.getSupportedTypes()) {
-                    if (str2.equalsIgnoreCase(str)) {
-                        linkedList.add(mediaCodecInfo);
+            if (!mediaCodecInfo.isEncoder()) {
+                if (!mediaCodecInfo.isHardwareAccelerated()) {
+                    Log.v(TAG, "Skipping " + str + " decoder " + mediaCodecInfo.getName() + " because it is not hardware-accelerated");
+                } else if (!mediaCodecInfo.isAlias()) {
+                    for (String str2 : mediaCodecInfo.getSupportedTypes()) {
+                        if (str2.equalsIgnoreCase(str)) {
+                            linkedList.add(mediaCodecInfo);
+                        }
                     }
                 }
             }
         }
         if (linkedList.isEmpty()) {
+            Log.v(TAG, "No viable candidate decoders found, using system default.");
             return null;
         }
         if (Build.VERSION.SDK_INT >= 30) {
@@ -175,7 +185,7 @@ public class SteamLinkUtils {
             }
         }
         String name = ((MediaCodecInfo) linkedList.getFirst()).getName();
-        Log.v(TAG, "Falling back to first codec: " + name);
+        Log.v(TAG, "No 'best' option, falling back to first available codec: " + name);
         return name;
     }
 }
