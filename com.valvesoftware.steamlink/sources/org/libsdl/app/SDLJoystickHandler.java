@@ -1,11 +1,14 @@
 package org.libsdl.app;
 
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.hardware.lights.Light;
 import android.hardware.lights.LightState;
 import android.hardware.lights.LightsManager;
 import android.hardware.lights.LightsRequest;
 import android.os.Build;
+import android.os.Handler;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 import java.util.ArrayList;
@@ -21,13 +24,17 @@ class SDLJoystickHandler {
 
     /* JADX INFO: compiled from: SDLControllerManager.java */
     static class SDLJoystick {
+        Sensor accelerometerSensor;
         ArrayList<InputDevice.MotionRange> axes;
         String desc;
         int device_id;
+        Sensor gyroscopeSensor;
         ArrayList<InputDevice.MotionRange> hats;
         ArrayList<Light> lights;
         LightsManager.LightsSession lightsSession;
         String name;
+        SDLJoySensorListener sensorListener;
+        SensorManager sensorManager;
 
         SDLJoystick() {
         }
@@ -72,6 +79,8 @@ class SDLJoystickHandler {
     synchronized void pollInputDevices() {
         boolean z;
         boolean z2;
+        boolean z3;
+        boolean z4;
         int[] deviceIds = InputDevice.getDeviceIds();
         for (int i : deviceIds) {
             if (SDLControllerManager.isDeviceSDLJoystick(i) && getJoystick(i) == null) {
@@ -95,30 +104,45 @@ class SDLJoystickHandler {
                     }
                 }
                 if (Build.VERSION.SDK_INT >= 31) {
-                    boolean z3 = device.getVibratorManager().getVibratorIds().length > 0;
+                    boolean z5 = device.getVibratorManager().getVibratorIds().length > 0;
                     LightsManager lightsManager = device.getLightsManager();
                     Iterator it = lightsManager.getLights().iterator();
                     while (it.hasNext()) {
-                        Light lightM10m = SDLSurface$$ExternalSyntheticApiModelOutline0.m10m(it.next());
-                        if (lightM10m.hasRgbControl()) {
-                            sDLJoystick.lights.add(lightM10m);
+                        Light lightM11m = SDLSurface$$ExternalSyntheticApiModelOutline0.m11m(it.next());
+                        if (lightM11m.hasRgbControl()) {
+                            sDLJoystick.lights.add(lightM11m);
                         }
                     }
                     if (sDLJoystick.lights.isEmpty()) {
-                        z = z3;
+                        z4 = false;
                     } else {
                         sDLJoystick.lightsSession = lightsManager.openSession();
-                        z = z3;
-                        z2 = true;
+                        z4 = true;
+                    }
+                    SensorManager sensorManager = device.getSensorManager();
+                    if (sensorManager != null) {
+                        sDLJoystick.sensorManager = sensorManager;
+                        sDLJoystick.sensorListener = new SDLJoySensorListener(sDLJoystick.device_id);
+                        sDLJoystick.accelerometerSensor = sensorManager.getDefaultSensor(1);
+                        boolean z6 = sDLJoystick.accelerometerSensor != null;
+                        sDLJoystick.gyroscopeSensor = sensorManager.getDefaultSensor(4);
+                        z = z5;
+                        z2 = z4;
+                        z3 = z6;
+                        boolean z7 = sDLJoystick.gyroscopeSensor != null;
                         this.mJoysticks.add(sDLJoystick);
-                        SDLControllerManager.nativeAddJoystick(sDLJoystick.device_id, sDLJoystick.name, sDLJoystick.desc, getVendorId(device), getProductId(device), getButtonMask(device), sDLJoystick.axes.size(), getAxisMask(sDLJoystick.axes), sDLJoystick.hats.size() / 2, z, z2);
+                        SDLControllerManager.nativeAddJoystick(sDLJoystick.device_id, sDLJoystick.name, sDLJoystick.desc, getVendorId(device), getProductId(device), getButtonMask(device), sDLJoystick.axes.size(), getAxisMask(sDLJoystick.axes), sDLJoystick.hats.size() / 2, z, z2, z3, z7);
+                    } else {
+                        z = z5;
+                        z2 = z4;
                     }
                 } else {
                     z = false;
+                    z2 = false;
                 }
-                z2 = false;
+                z3 = false;
                 this.mJoysticks.add(sDLJoystick);
-                SDLControllerManager.nativeAddJoystick(sDLJoystick.device_id, sDLJoystick.name, sDLJoystick.desc, getVendorId(device), getProductId(device), getButtonMask(device), sDLJoystick.axes.size(), getAxisMask(sDLJoystick.axes), sDLJoystick.hats.size() / 2, z, z2);
+                SDLControllerManager.nativeAddJoystick(sDLJoystick.device_id, sDLJoystick.name, sDLJoystick.desc, getVendorId(device), getProductId(device), getButtonMask(device), sDLJoystick.axes.size(), getAxisMask(sDLJoystick.axes), sDLJoystick.hats.size() / 2, z, z2, z3, z7);
             }
         }
         Iterator<SDLJoystick> it2 = this.mJoysticks.iterator();
@@ -240,15 +264,38 @@ class SDLJoystickHandler {
         if (Build.VERSION.SDK_INT < 31 || (joystick = getJoystick(i)) == null || joystick.lights.isEmpty()) {
             return;
         }
-        LightsRequest.Builder builderM16m = SDLSurface$$ExternalSyntheticApiModelOutline0.m16m();
-        LightState lightStateBuild = SDLSurface$$ExternalSyntheticApiModelOutline0.m11m().setColor(Color.rgb(i2, i3, i4)).build();
+        LightsRequest.Builder builderM17m = SDLSurface$$ExternalSyntheticApiModelOutline0.m17m();
+        LightState lightStateBuild = SDLSurface$$ExternalSyntheticApiModelOutline0.m12m().setColor(Color.rgb(i2, i3, i4)).build();
         Iterator<Light> it = joystick.lights.iterator();
         while (it.hasNext()) {
-            Light lightM10m = SDLSurface$$ExternalSyntheticApiModelOutline0.m10m((Object) it.next());
-            if (lightM10m.hasRgbControl()) {
-                builderM16m.addLight(lightM10m, lightStateBuild);
+            Light lightM11m = SDLSurface$$ExternalSyntheticApiModelOutline0.m11m((Object) it.next());
+            if (lightM11m.hasRgbControl()) {
+                builderM17m.addLight(lightM11m, lightStateBuild);
             }
         }
-        joystick.lightsSession.requestLights(builderM16m.build());
+        joystick.lightsSession.requestLights(builderM17m.build());
+    }
+
+    void setSensorsEnabled(int i, boolean z) {
+        SDLJoystick joystick;
+        if (Build.VERSION.SDK_INT < 31 || (joystick = getJoystick(i)) == null || joystick.sensorManager == null) {
+            return;
+        }
+        if (z) {
+            if (joystick.accelerometerSensor != null) {
+                joystick.sensorManager.registerListener(joystick.sensorListener, joystick.accelerometerSensor, 1, (Handler) null);
+            }
+            if (joystick.gyroscopeSensor != null) {
+                joystick.sensorManager.registerListener(joystick.sensorListener, joystick.gyroscopeSensor, 1, (Handler) null);
+                return;
+            }
+            return;
+        }
+        if (joystick.accelerometerSensor != null) {
+            joystick.sensorManager.unregisterListener(joystick.sensorListener, joystick.accelerometerSensor);
+        }
+        if (joystick.gyroscopeSensor != null) {
+            joystick.sensorManager.unregisterListener(joystick.sensorListener, joystick.gyroscopeSensor);
+        }
     }
 }

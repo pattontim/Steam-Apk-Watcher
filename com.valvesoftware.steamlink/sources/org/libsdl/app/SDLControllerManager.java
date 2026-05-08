@@ -12,7 +12,7 @@ public class SDLControllerManager {
 
     static native void nativeAddHaptic(int i, String str);
 
-    static native void nativeAddJoystick(int i, String str, String str2, int i2, int i3, int i4, int i5, int i6, int i7, boolean z, boolean z2);
+    static native void nativeAddJoystick(int i, String str, String str2, int i2, int i3, int i4, int i5, int i6, int i7, boolean z, boolean z2, boolean z3, boolean z4);
 
     static native void nativeRemoveHaptic(int i);
 
@@ -24,9 +24,11 @@ public class SDLControllerManager {
 
     static native void onNativeJoy(int i, int i2, float f);
 
-    public static native boolean onNativePadDown(int i, int i2);
+    static native void onNativeJoySensor(int i, int i2, long j, float f, float f2, float f3);
 
-    public static native boolean onNativePadUp(int i, int i2);
+    public static native boolean onNativePadDown(int i, int i2, int i3);
+
+    public static native boolean onNativePadUp(int i, int i2, int i3);
 
     static void initialize() {
         if (mJoystickHandler == null) {
@@ -53,6 +55,10 @@ public class SDLControllerManager {
 
     static void joystickSetLED(int i, int i2, int i3, int i4) {
         mJoystickHandler.setLED(i, i2, i3, i4);
+    }
+
+    static void joystickSetSensorsEnabled(int i, boolean z) {
+        mJoystickHandler.setSensorsEnabled(i, z);
     }
 
     static void pollHapticDevices() {

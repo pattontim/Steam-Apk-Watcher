@@ -1043,12 +1043,12 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if (source == 0 && (device = InputDevice.getDevice(deviceId)) != null) {
             source = device.getSources();
         }
-        if (SDLControllerManager.isDeviceSDLJoystick(deviceId)) {
+        if (SDLControllerManager.isDeviceSDLJoystick(deviceId) && keyEvent.getRepeatCount() == 0) {
             if (keyEvent.getAction() == 0) {
-                if (SDLControllerManager.onNativePadDown(deviceId, i)) {
+                if (SDLControllerManager.onNativePadDown(deviceId, i, keyEvent.getScanCode())) {
                     return true;
                 }
-            } else if (keyEvent.getAction() == 1 && SDLControllerManager.onNativePadUp(deviceId, i)) {
+            } else if (keyEvent.getAction() == 1 && SDLControllerManager.onNativePadUp(deviceId, i, keyEvent.getScanCode())) {
                 return true;
             }
         }
@@ -1265,7 +1265,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     public static boolean setCustomCursor(int i) {
         if (Build.VERSION.SDK_INT >= 24) {
             try {
-                mSurface.setPointerIcon(SDLSurface$$ExternalSyntheticApiModelOutline0.m28m((Object) mCursors.get(Integer.valueOf(i))));
+                mSurface.setPointerIcon(SDLSurface$$ExternalSyntheticApiModelOutline0.m29m((Object) mCursors.get(Integer.valueOf(i))));
                 return true;
             } catch (Exception unused) {
             }

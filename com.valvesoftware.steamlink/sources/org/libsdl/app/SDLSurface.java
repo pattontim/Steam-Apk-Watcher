@@ -28,6 +28,7 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, V
     protected Display mDisplay;
     protected float mHeight;
     protected boolean mIsSurfaceReady;
+    protected boolean mKeyboardVisible;
     protected SensorManager mSensorManager;
     protected float mWidth;
     private final ScaleGestureDetector scaleGestureDetector;
@@ -160,6 +161,16 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, V
         if (Build.VERSION.SDK_INT >= 30) {
             Insets insets = windowInsets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.systemGestures() | WindowInsets.Type.mandatorySystemGestures() | WindowInsets.Type.tappableElement() | WindowInsets.Type.displayCutout());
             SDLActivity.onNativeInsetsChanged(insets.left, insets.right, insets.top, insets.bottom);
+            if (windowInsets.isVisible(WindowInsets.Type.ime())) {
+                if (!this.mKeyboardVisible) {
+                    this.mKeyboardVisible = true;
+                    SDLActivity.onNativeScreenKeyboardShown();
+                    return windowInsets;
+                }
+            } else if (this.mKeyboardVisible) {
+                this.mKeyboardVisible = false;
+                SDLActivity.onNativeScreenKeyboardHidden();
+            }
         }
         return windowInsets;
     }

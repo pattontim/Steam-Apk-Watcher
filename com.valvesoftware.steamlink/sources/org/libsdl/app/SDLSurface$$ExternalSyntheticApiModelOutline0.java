@@ -9,22 +9,22 @@ import android.view.PointerIcon;
 /* JADX INFO: loaded from: classes.dex */
 public final /* synthetic */ class SDLSurface$$ExternalSyntheticApiModelOutline0 {
     /* JADX INFO: renamed from: m */
-    public static /* bridge */ /* synthetic */ Light m10m(Object obj) {
+    public static /* bridge */ /* synthetic */ Light m11m(Object obj) {
         return (Light) obj;
     }
 
     /* JADX INFO: renamed from: m */
-    public static /* synthetic */ LightState.Builder m11m() {
+    public static /* synthetic */ LightState.Builder m12m() {
         return new LightState.Builder();
     }
 
     /* JADX INFO: renamed from: m */
-    public static /* synthetic */ LightsRequest.Builder m16m() {
+    public static /* synthetic */ LightsRequest.Builder m17m() {
         return new LightsRequest.Builder();
     }
 
     /* JADX INFO: renamed from: m */
-    public static /* bridge */ /* synthetic */ PointerIcon m28m(Object obj) {
+    public static /* bridge */ /* synthetic */ PointerIcon m29m(Object obj) {
         return (PointerIcon) obj;
     }
 }
