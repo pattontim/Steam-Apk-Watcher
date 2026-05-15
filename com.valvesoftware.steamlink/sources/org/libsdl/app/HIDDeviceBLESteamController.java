@@ -31,6 +31,8 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
     private static final int TRITON_BLE_PID = 4867;
     private BluetoothDevice mDevice;
     private int mDeviceId;
+    private boolean mHasEnabledNotifications;
+    private boolean mHasSeenInputUpdate;
     private boolean mIsChromebook;
     private boolean mIsRegistered;
     private HIDDeviceManager mManager;
@@ -90,9 +92,10 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
     }
 
     static class GattOperation {
+        int mDelayMs;
         BluetoothGatt mGatt;
         Operation mOp;
-        boolean mResult = true;
+        boolean mResult;
         UUID mUuid;
         byte[] mValue;
 
@@ -103,16 +106,37 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
         }
 
         private GattOperation(BluetoothGatt bluetoothGatt, Operation operation, UUID uuid) {
+            this.mResult = true;
+            this.mDelayMs = 0;
             this.mGatt = bluetoothGatt;
             this.mOp = operation;
             this.mUuid = uuid;
         }
 
+        private GattOperation(BluetoothGatt bluetoothGatt, Operation operation, UUID uuid, int i) {
+            this.mResult = true;
+            this.mGatt = bluetoothGatt;
+            this.mOp = operation;
+            this.mUuid = uuid;
+            this.mDelayMs = i;
+        }
+
         private GattOperation(BluetoothGatt bluetoothGatt, Operation operation, UUID uuid, byte[] bArr) {
+            this.mResult = true;
+            this.mDelayMs = 0;
             this.mGatt = bluetoothGatt;
             this.mOp = operation;
             this.mUuid = uuid;
             this.mValue = bArr;
+        }
+
+        private GattOperation(BluetoothGatt bluetoothGatt, Operation operation, UUID uuid, byte[] bArr, int i) {
+            this.mResult = true;
+            this.mGatt = bluetoothGatt;
+            this.mOp = operation;
+            this.mUuid = uuid;
+            this.mValue = bArr;
+            this.mDelayMs = i;
         }
 
         public void run() {
@@ -167,6 +191,10 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
             return this.mResult;
         }
 
+        public int getDelayMs() {
+            return this.mDelayMs;
+        }
+
         private BluetoothGattCharacteristic getCharacteristic(UUID uuid) {
             BluetoothGattService service = this.mGatt.getService(HIDDeviceBLESteamController.steamControllerService);
             if (service == null) {
@@ -186,16 +214,24 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
         public static GattOperation enableNotification(BluetoothGatt bluetoothGatt, UUID uuid) {
             return new GattOperation(bluetoothGatt, Operation.ENABLE_NOTIFICATION, uuid);
         }
+
+        public static GattOperation enableNotification(BluetoothGatt bluetoothGatt, UUID uuid, int i) {
+            return new GattOperation(bluetoothGatt, Operation.ENABLE_NOTIFICATION, uuid, i);
+        }
     }
 
     HIDDeviceBLESteamController(HIDDeviceManager hIDDeviceManager, BluetoothDevice bluetoothDevice) {
         this.mIsRegistered = false;
         this.mIsChromebook = false;
+        this.mHasEnabledNotifications = false;
+        this.mHasSeenInputUpdate = false;
         this.mManager = hIDDeviceManager;
         this.mDevice = bluetoothDevice;
         this.mDeviceId = hIDDeviceManager.getDeviceIDForIdentifier(getIdentifier());
         this.mIsRegistered = false;
         this.mIsChromebook = SDLActivity.isChromebook();
+        this.mHasEnabledNotifications = false;
+        this.mHasSeenInputUpdate = false;
     }
 
     String getIdentifier() {
@@ -357,7 +393,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                 return;
             }
             this.mCurrentOperation = this.mOperations.removeFirst();
-            this.mHandler.post(new Runnable() { // from class: org.libsdl.app.HIDDeviceBLESteamController.2
+            Runnable runnable = new Runnable() { // from class: org.libsdl.app.HIDDeviceBLESteamController.2
                 @Override // java.lang.Runnable
                 public void run() {
                     synchronized (HIDDeviceBLESteamController.this.mOperations) {
@@ -368,19 +404,40 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                         }
                     }
                 }
-            });
+            };
+            if (this.mCurrentOperation.getDelayMs() == 0) {
+                this.mHandler.post(runnable);
+            } else {
+                this.mHandler.postDelayed(runnable, this.mCurrentOperation.getDelayMs());
+            }
         }
     }
 
-    private void queueGattOperation(GattOperation gattOperation) {
+    /* JADX INFO: Access modifiers changed from: private */
+    public void queueGattOperation(GattOperation gattOperation) {
         synchronized (this.mOperations) {
             this.mOperations.add(gattOperation);
         }
         executeNextGattOperation();
     }
 
-    private void enableNotification(UUID uuid) {
-        queueGattOperation(GattOperation.enableNotification(this.mGatt, uuid));
+    private void enableNotification(final UUID uuid) {
+        queueGattOperation(GattOperation.enableNotification(this.mGatt, uuid, 500));
+        this.mHandler.postDelayed(new Runnable() { // from class: org.libsdl.app.HIDDeviceBLESteamController.3
+            @Override // java.lang.Runnable
+            public void run() {
+                if (this.mHasEnabledNotifications) {
+                    return;
+                }
+                if (!this.mHasSeenInputUpdate) {
+                    this.queueGattOperation(GattOperation.enableNotification(this.mGatt, uuid, 500));
+                } else {
+                    Log.w(HIDDeviceBLESteamController.TAG, "WriteDescriptor has never returned, but we've seen input reports. Moving on with controller initialization.");
+                    this.mHasEnabledNotifications = true;
+                    this.enableValveMode();
+                }
+            }
+        }, 1000L);
     }
 
     void writeCharacteristic(UUID uuid, byte[] bArr) {
@@ -403,7 +460,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
             if (isRegistered()) {
                 return;
             }
-            this.mHandler.post(new Runnable() { // from class: org.libsdl.app.HIDDeviceBLESteamController.3
+            this.mHandler.post(new Runnable() { // from class: org.libsdl.app.HIDDeviceBLESteamController.4
                 @Override // java.lang.Runnable
                 public void run() {
                     HIDDeviceBLESteamController.this.mGatt.discoverServices();
@@ -453,28 +510,35 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
         if (!bluetoothGattCharacteristic.getUuid().equals(getInputCharacteristic()) || this.mFrozen) {
             return;
         }
+        this.mHasSeenInputUpdate = true;
         this.mManager.HIDDeviceInputReport(getId(), bluetoothGattCharacteristic.getValue());
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void enableValveMode() {
+        BluetoothGattCharacteristic characteristic;
+        BluetoothGattService service = this.mGatt.getService(steamControllerService);
+        if (service == null || (characteristic = service.getCharacteristic(reportCharacteristic)) == null) {
+            return;
+        }
+        if (getProductId() == TRITON_BLE_PID) {
+            Log.v(TAG, "Registering Triton Steam Controller with ID: " + getId());
+            this.mManager.HIDDeviceConnected(getId(), getIdentifier(), getVendorId(), getProductId(), getSerialNumber(), getVersion(), getManufacturerName(), getProductName(), 0, 0, 0, 0, true);
+            setRegistered();
+            return;
+        }
+        Log.v(TAG, "Writing report characteristic to enter valve mode");
+        characteristic.setValue(enterValveMode);
+        this.mGatt.writeCharacteristic(characteristic);
     }
 
     @Override // android.bluetooth.BluetoothGattCallback
     public void onDescriptorWrite(BluetoothGatt bluetoothGatt, BluetoothGattDescriptor bluetoothGattDescriptor, int i) {
-        HIDDeviceBLESteamController hIDDeviceBLESteamController;
-        BluetoothGattCharacteristic characteristic;
-        BluetoothGattCharacteristic characteristic2 = bluetoothGattDescriptor.getCharacteristic();
-        if (!characteristic2.getUuid().equals(getInputCharacteristic()) || (characteristic = characteristic2.getService().getCharacteristic(reportCharacteristic)) == null) {
-            hIDDeviceBLESteamController = this;
-        } else if (getProductId() == TRITON_BLE_PID) {
-            Log.v(TAG, "Registering Triton Steam Controller with ID: " + getId());
-            hIDDeviceBLESteamController = this;
-            hIDDeviceBLESteamController.mManager.HIDDeviceConnected(hIDDeviceBLESteamController.getId(), hIDDeviceBLESteamController.getIdentifier(), hIDDeviceBLESteamController.getVendorId(), hIDDeviceBLESteamController.getProductId(), hIDDeviceBLESteamController.getSerialNumber(), hIDDeviceBLESteamController.getVersion(), hIDDeviceBLESteamController.getManufacturerName(), hIDDeviceBLESteamController.getProductName(), 0, 0, 0, 0, true);
-            hIDDeviceBLESteamController.setRegistered();
-        } else {
-            hIDDeviceBLESteamController = this;
-            Log.v(TAG, "Writing report characteristic to enter valve mode");
-            characteristic.setValue(enterValveMode);
-            bluetoothGatt.writeCharacteristic(characteristic);
+        if (bluetoothGattDescriptor.getCharacteristic().getUuid().equals(getInputCharacteristic())) {
+            this.mHasEnabledNotifications = true;
+            enableValveMode();
         }
-        hIDDeviceBLESteamController.finishCurrentGattOperation();
+        finishCurrentGattOperation();
     }
 
     @Override // org.libsdl.app.HIDDevice

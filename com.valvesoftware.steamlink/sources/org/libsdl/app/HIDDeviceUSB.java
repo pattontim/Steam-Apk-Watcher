@@ -112,7 +112,7 @@ class HIDDeviceUSB implements HIDDevice {
                 this.mOutputEndpoint = endpoint;
             }
         }
-        if (this.mInputEndpoint == null || this.mOutputEndpoint == null) {
+        if (this.mInputEndpoint == null) {
             Log.w(TAG, "Missing required endpoint on USB device " + getDeviceName());
             close();
             return false;
@@ -153,7 +153,12 @@ class HIDDeviceUSB implements HIDDevice {
             Log.w(TAG, "writeFeatureReport() returned " + iControlTransfer + " on device " + getDeviceName());
             return -1;
         }
-        int iBulkTransfer = usbDeviceConnection.bulkTransfer(this.mOutputEndpoint, bArr, bArr.length, 1000);
+        UsbEndpoint usbEndpoint = this.mOutputEndpoint;
+        if (usbEndpoint == null) {
+            Log.e(TAG, "Tried to write an output report to an interface with no output endpoint!");
+            return -1;
+        }
+        int iBulkTransfer = usbDeviceConnection.bulkTransfer(usbEndpoint, bArr, bArr.length, 1000);
         if (iBulkTransfer != bArr.length) {
             Log.w(TAG, "writeOutputReport() returned " + iBulkTransfer + " on device " + getDeviceName());
         }

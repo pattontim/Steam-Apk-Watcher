@@ -187,7 +187,7 @@ class SDLJoystickHandler {
         }
     }
 
-    protected synchronized SDLJoystick getJoystick(int i) {
+    protected SDLJoystick getJoystick(int i) {
         for (SDLJoystick sDLJoystick : this.mJoysticks) {
             if (sDLJoystick.device_id == i) {
                 return sDLJoystick;
@@ -196,7 +196,7 @@ class SDLJoystickHandler {
         return null;
     }
 
-    boolean handleMotionEvent(MotionEvent motionEvent) {
+    synchronized boolean handleMotionEvent(MotionEvent motionEvent) {
         SDLJoystick joystick;
         int actionIndex = motionEvent.getActionIndex();
         if (motionEvent.getActionMasked() == 2 && (joystick = getJoystick(motionEvent.getDeviceId())) != null) {
@@ -259,43 +259,48 @@ class SDLJoystickHandler {
         return i;
     }
 
-    void setLED(int i, int i2, int i3, int i4) {
-        SDLJoystick joystick;
-        if (Build.VERSION.SDK_INT < 31 || (joystick = getJoystick(i)) == null || joystick.lights.isEmpty()) {
+    synchronized void setLED(int i, int i2, int i3, int i4) {
+        if (Build.VERSION.SDK_INT < 31) {
             return;
         }
-        LightsRequest.Builder builderM17m = SDLSurface$$ExternalSyntheticApiModelOutline0.m17m();
-        LightState lightStateBuild = SDLSurface$$ExternalSyntheticApiModelOutline0.m12m().setColor(Color.rgb(i2, i3, i4)).build();
-        Iterator<Light> it = joystick.lights.iterator();
-        while (it.hasNext()) {
-            Light lightM11m = SDLSurface$$ExternalSyntheticApiModelOutline0.m11m((Object) it.next());
-            if (lightM11m.hasRgbControl()) {
-                builderM17m.addLight(lightM11m, lightStateBuild);
+        SDLJoystick joystick = getJoystick(i);
+        if (joystick != null && !joystick.lights.isEmpty()) {
+            SDLSurface$$ExternalSyntheticApiModelOutline0.m34m();
+            LightsRequest.Builder builderM17m = SDLSurface$$ExternalSyntheticApiModelOutline0.m17m();
+            SDLSurface$$ExternalSyntheticApiModelOutline0.m53m$1();
+            LightState lightStateBuild = SDLSurface$$ExternalSyntheticApiModelOutline0.m12m().setColor(Color.rgb(i2, i3, i4)).build();
+            Iterator<Light> it = joystick.lights.iterator();
+            while (it.hasNext()) {
+                Light lightM11m = SDLSurface$$ExternalSyntheticApiModelOutline0.m11m((Object) it.next());
+                if (lightM11m.hasRgbControl()) {
+                    builderM17m.addLight(lightM11m, lightStateBuild);
+                }
             }
+            joystick.lightsSession.requestLights(builderM17m.build());
         }
-        joystick.lightsSession.requestLights(builderM17m.build());
     }
 
-    void setSensorsEnabled(int i, boolean z) {
-        SDLJoystick joystick;
-        if (Build.VERSION.SDK_INT < 31 || (joystick = getJoystick(i)) == null || joystick.sensorManager == null) {
+    synchronized void setSensorsEnabled(int i, boolean z) {
+        if (Build.VERSION.SDK_INT < 31) {
             return;
         }
-        if (z) {
-            if (joystick.accelerometerSensor != null) {
-                joystick.sensorManager.registerListener(joystick.sensorListener, joystick.accelerometerSensor, 1, (Handler) null);
+        SDLJoystick joystick = getJoystick(i);
+        if (joystick != null && joystick.sensorManager != null) {
+            if (z) {
+                if (joystick.accelerometerSensor != null) {
+                    joystick.sensorManager.registerListener(joystick.sensorListener, joystick.accelerometerSensor, 1, (Handler) null);
+                }
+                if (joystick.gyroscopeSensor != null) {
+                    joystick.sensorManager.registerListener(joystick.sensorListener, joystick.gyroscopeSensor, 1, (Handler) null);
+                }
+            } else {
+                if (joystick.accelerometerSensor != null) {
+                    joystick.sensorManager.unregisterListener(joystick.sensorListener, joystick.accelerometerSensor);
+                }
+                if (joystick.gyroscopeSensor != null) {
+                    joystick.sensorManager.unregisterListener(joystick.sensorListener, joystick.gyroscopeSensor);
+                }
             }
-            if (joystick.gyroscopeSensor != null) {
-                joystick.sensorManager.registerListener(joystick.sensorListener, joystick.gyroscopeSensor, 1, (Handler) null);
-                return;
-            }
-            return;
-        }
-        if (joystick.accelerometerSensor != null) {
-            joystick.sensorManager.unregisterListener(joystick.sensorListener, joystick.accelerometerSensor);
-        }
-        if (joystick.gyroscopeSensor != null) {
-            joystick.sensorManager.unregisterListener(joystick.sensorListener, joystick.gyroscopeSensor);
         }
     }
 }

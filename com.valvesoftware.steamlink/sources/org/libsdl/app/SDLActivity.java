@@ -61,26 +61,40 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     protected static final int SDL_ORIENTATION_PORTRAIT = 3;
     protected static final int SDL_ORIENTATION_PORTRAIT_FLIPPED = 4;
     protected static final int SDL_ORIENTATION_UNKNOWN = 0;
-    private static final int SDL_SYSTEM_CURSOR_ARROW = 0;
+    private static final int SDL_SYSTEM_CURSOR_ALIAS = 24;
+    private static final int SDL_SYSTEM_CURSOR_ALL_SCROLL = 31;
+    private static final int SDL_SYSTEM_CURSOR_CELL = 22;
+    private static final int SDL_SYSTEM_CURSOR_COL_RESIZE = 29;
+    private static final int SDL_SYSTEM_CURSOR_CONTEXT_MENU = 20;
+    private static final int SDL_SYSTEM_CURSOR_COPY = 25;
     private static final int SDL_SYSTEM_CURSOR_CROSSHAIR = 3;
-    private static final int SDL_SYSTEM_CURSOR_HAND = 11;
-    private static final int SDL_SYSTEM_CURSOR_IBEAM = 1;
-    private static final int SDL_SYSTEM_CURSOR_NO = 10;
-    private static final int SDL_SYSTEM_CURSOR_SIZEALL = 9;
-    private static final int SDL_SYSTEM_CURSOR_SIZENESW = 6;
-    private static final int SDL_SYSTEM_CURSOR_SIZENS = 8;
-    private static final int SDL_SYSTEM_CURSOR_SIZENWSE = 5;
-    private static final int SDL_SYSTEM_CURSOR_SIZEWE = 7;
+    private static final int SDL_SYSTEM_CURSOR_DEFAULT = 0;
+    private static final int SDL_SYSTEM_CURSOR_EW_RESIZE = 7;
+    private static final int SDL_SYSTEM_CURSOR_E_RESIZE = 15;
+    private static final int SDL_SYSTEM_CURSOR_GRAB = 27;
+    private static final int SDL_SYSTEM_CURSOR_GRABBING = 28;
+    private static final int SDL_SYSTEM_CURSOR_HELP = 21;
+    private static final int SDL_SYSTEM_CURSOR_MOVE = 9;
+    private static final int SDL_SYSTEM_CURSOR_NESW_RESIZE = 6;
+    private static final int SDL_SYSTEM_CURSOR_NE_RESIZE = 14;
+    private static final int SDL_SYSTEM_CURSOR_NOT_ALLOWED = 10;
+    private static final int SDL_SYSTEM_CURSOR_NO_DROP = 26;
+    private static final int SDL_SYSTEM_CURSOR_NS_RESIZE = 8;
+    private static final int SDL_SYSTEM_CURSOR_NWSE_RESIZE = 5;
+    private static final int SDL_SYSTEM_CURSOR_NW_RESIZE = 12;
+    private static final int SDL_SYSTEM_CURSOR_N_RESIZE = 13;
+    private static final int SDL_SYSTEM_CURSOR_POINTER = 11;
+    private static final int SDL_SYSTEM_CURSOR_PROGRESS = 4;
+    private static final int SDL_SYSTEM_CURSOR_ROW_RESIZE = 30;
+    private static final int SDL_SYSTEM_CURSOR_SE_RESIZE = 16;
+    private static final int SDL_SYSTEM_CURSOR_SW_RESIZE = 18;
+    private static final int SDL_SYSTEM_CURSOR_S_RESIZE = 17;
+    private static final int SDL_SYSTEM_CURSOR_TEXT = 1;
+    private static final int SDL_SYSTEM_CURSOR_VERTICAL_TEXT = 23;
     private static final int SDL_SYSTEM_CURSOR_WAIT = 2;
-    private static final int SDL_SYSTEM_CURSOR_WAITARROW = 4;
-    private static final int SDL_SYSTEM_CURSOR_WINDOW_BOTTOM = 17;
-    private static final int SDL_SYSTEM_CURSOR_WINDOW_BOTTOMLEFT = 18;
-    private static final int SDL_SYSTEM_CURSOR_WINDOW_BOTTOMRIGHT = 16;
-    private static final int SDL_SYSTEM_CURSOR_WINDOW_LEFT = 19;
-    private static final int SDL_SYSTEM_CURSOR_WINDOW_RIGHT = 15;
-    private static final int SDL_SYSTEM_CURSOR_WINDOW_TOP = 13;
-    private static final int SDL_SYSTEM_CURSOR_WINDOW_TOPLEFT = 12;
-    private static final int SDL_SYSTEM_CURSOR_WINDOW_TOPRIGHT = 14;
+    private static final int SDL_SYSTEM_CURSOR_W_RESIZE = 19;
+    private static final int SDL_SYSTEM_CURSOR_ZOOM_IN = 32;
+    private static final int SDL_SYSTEM_CURSOR_ZOOM_OUT = 33;
     private static final String TAG = "SDL";
     protected static boolean mActivityCreated;
     public static boolean mBrokenLibraries;
@@ -217,7 +231,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     static {
-        mHasMultiWindow = Build.VERSION.SDK_INT >= 24;
+        mHasMultiWindow = Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_ALIAS;
         mBrokenLibraries = true;
         mSDLMainFinished = false;
         mActivityCreated = false;
@@ -227,11 +241,11 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     public static SDLGenericMotionListener_API14 getMotionListener() {
         if (mMotionListener == null) {
-            if (Build.VERSION.SDK_INT >= 29) {
+            if (Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_COL_RESIZE) {
                 mMotionListener = new SDLGenericMotionListener_API29();
-            } else if (Build.VERSION.SDK_INT >= 26) {
+            } else if (Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_NO_DROP) {
                 mMotionListener = new SDLGenericMotionListener_API26();
-            } else if (Build.VERSION.SDK_INT >= 24) {
+            } else if (Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_ALIAS) {
                 mMotionListener = new SDLGenericMotionListener_API24();
             } else {
                 mMotionListener = new SDLGenericMotionListener_API14();
@@ -386,7 +400,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         mCurrentRotation = currentRotation;
         onNativeRotationChanged(currentRotation);
         try {
-            if (Build.VERSION.SDK_INT < 24) {
+            if (Build.VERSION.SDK_INT < SDL_SYSTEM_CURSOR_ALIAS) {
                 mCurrentLocale = getContext().getResources().getConfiguration().locale;
             } else {
                 mCurrentLocale = getContext().getResources().getConfiguration().getLocales().get(0);
@@ -394,9 +408,9 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         } catch (Exception unused) {
         }
         int i = getContext().getResources().getConfiguration().uiMode & 48;
-        if (i == SDL_SYSTEM_CURSOR_WINDOW_BOTTOMRIGHT) {
+        if (i == SDL_SYSTEM_CURSOR_SE_RESIZE) {
             onNativeDarkModeChanged(false);
-        } else if (i == 32) {
+        } else if (i == SDL_SYSTEM_CURSOR_ZOOM_IN) {
             onNativeDarkModeChanged(true);
         }
         setContentView(mLayout);
@@ -547,10 +561,10 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             onNativeLocaleChanged();
         }
         int i = configuration.uiMode & 48;
-        if (i == SDL_SYSTEM_CURSOR_WINDOW_BOTTOMRIGHT) {
+        if (i == SDL_SYSTEM_CURSOR_SE_RESIZE) {
             onNativeDarkModeChanged(false);
         } else {
-            if (i != 32) {
+            if (i != SDL_SYSTEM_CURSOR_ZOOM_IN) {
                 return;
             }
             onNativeDarkModeChanged(true);
@@ -640,7 +654,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     @Override // android.app.Activity, android.view.Window.Callback
     public boolean dispatchKeyEvent(KeyEvent keyEvent) {
         int keyCode;
-        if (mBrokenLibraries || (keyCode = keyEvent.getKeyCode()) == 25 || keyCode == 24 || keyCode == 27 || keyCode == 168 || keyCode == 169) {
+        if (mBrokenLibraries || (keyCode = keyEvent.getKeyCode()) == SDL_SYSTEM_CURSOR_COPY || keyCode == SDL_SYSTEM_CURSOR_ALIAS || keyCode == SDL_SYSTEM_CURSOR_GRAB || keyCode == 168 || keyCode == 169) {
             return false;
         }
         mDispatchingKeyEvent = true;
@@ -728,10 +742,10 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                         window2.clearFlags(1024);
                         SDLActivity.mFullscreenModeActive = false;
                     }
-                    if (Build.VERSION.SDK_INT >= 30) {
+                    if (Build.VERSION.SDK_INT >= SDLActivity.SDL_SYSTEM_CURSOR_ROW_RESIZE) {
                         window2.getAttributes().layoutInDisplayCutoutMode = 3;
                     }
-                    if (Build.VERSION.SDK_INT < 30 || Build.VERSION.SDK_INT >= 35) {
+                    if (Build.VERSION.SDK_INT < SDLActivity.SDL_SYSTEM_CURSOR_ROW_RESIZE || Build.VERSION.SDK_INT >= 35) {
                         return;
                     }
                     SDLActivity.onNativeInsetsChanged(0, 0, 0, 0);
@@ -825,7 +839,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             return;
         }
         if (str.contains("LandscapeRight") && str.contains("LandscapeLeft")) {
-            i3 = SDL_SYSTEM_CURSOR_HAND;
+            i3 = SDL_SYSTEM_CURSOR_POINTER;
         } else if (str.contains("LandscapeLeft")) {
             i3 = 0;
         } else {
@@ -833,15 +847,15 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         }
         boolean z2 = str.contains("Portrait ") || str.endsWith("Portrait");
         if (z2 && str.contains("PortraitUpsideDown")) {
-            i4 = SDL_SYSTEM_CURSOR_WINDOW_TOPLEFT;
+            i4 = SDL_SYSTEM_CURSOR_NW_RESIZE;
         } else if (z2) {
             i4 = 1;
         } else {
-            i4 = str.contains("PortraitUpsideDown") ? SDL_SYSTEM_CURSOR_SIZEALL : -1;
+            i4 = str.contains("PortraitUpsideDown") ? SDL_SYSTEM_CURSOR_MOVE : -1;
         }
         boolean z3 = i3 != -1;
         boolean z4 = i4 != -1;
-        int i5 = SDL_SYSTEM_CURSOR_WINDOW_TOP;
+        int i5 = SDL_SYSTEM_CURSOR_N_RESIZE;
         if (z4 || z3) {
             if (!z) {
                 if (!z4 || !z3 ? !z3 : i <= i2) {
@@ -854,7 +868,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 i5 = i3;
             }
         } else if (!z) {
-            i5 = i > i2 ? SDL_SYSTEM_CURSOR_SIZENESW : SDL_SYSTEM_CURSOR_SIZEWE;
+            i5 = i > i2 ? SDL_SYSTEM_CURSOR_NESW_RESIZE : SDL_SYSTEM_CURSOR_EW_RESIZE;
         }
         Log.v(TAG, "setOrientation() requestedOrientation=" + i5 + " width=" + i + " height=" + i2 + " resizable=" + z + " hint=" + str);
         mSingleton.setRequestedOrientation(i5);
@@ -871,7 +885,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     public static boolean supportsRelativeMouse() {
-        if (Build.VERSION.SDK_INT >= 27 || !isDeXMode()) {
+        if (Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_GRAB || !isDeXMode()) {
             return getMotionListener().supportsRelativeMouse();
         }
         return false;
@@ -939,7 +953,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     public static boolean isDeXMode() {
         Configuration configuration;
         Class<?> cls;
-        if (Build.VERSION.SDK_INT < 24) {
+        if (Build.VERSION.SDK_INT < SDL_SYSTEM_CURSOR_ALIAS) {
             return false;
         }
         try {
@@ -1148,7 +1162,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             }
         });
         TextView textView = new TextView(this);
-        textView.setGravity(SDL_SYSTEM_CURSOR_WINDOW_BOTTOM);
+        textView.setGravity(SDL_SYSTEM_CURSOR_S_RESIZE);
         textView.setText(bundle.getString("message"));
         if (i2 != 0) {
             textView.setTextColor(i2);
@@ -1159,7 +1173,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         final SparseArray sparseArray = new SparseArray();
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(0);
-        linearLayout.setGravity(SDL_SYSTEM_CURSOR_WINDOW_BOTTOM);
+        linearLayout.setGravity(SDL_SYSTEM_CURSOR_S_RESIZE);
         for (int i6 = 0; i6 < stringArray.length; i6++) {
             Button button = new Button(this);
             final int i7 = intArray3[i6];
@@ -1243,7 +1257,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     public static int createCustomCursor(int[] iArr, int i, int i2, int i3, int i4) {
         Bitmap bitmapCreateBitmap = Bitmap.createBitmap(iArr, i, i2, Bitmap.Config.ARGB_8888);
         mLastCursorID++;
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_ALIAS) {
             try {
                 mCursors.put(Integer.valueOf(mLastCursorID), PointerIcon.create(bitmapCreateBitmap, i3, i4));
                 return mLastCursorID;
@@ -1254,7 +1268,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     public static void destroyCustomCursor(int i) {
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_ALIAS) {
             try {
                 mCursors.remove(Integer.valueOf(i));
             } catch (Exception unused) {
@@ -1263,7 +1277,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     public static boolean setCustomCursor(int i) {
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_ALIAS) {
             try {
                 mSurface.setPointerIcon(SDLSurface$$ExternalSyntheticApiModelOutline0.m29m((Object) mCursors.get(Integer.valueOf(i))));
                 return true;
@@ -1274,7 +1288,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     public static boolean setSystemCursor(int i) {
-        int i2 = 1004;
+        int i2 = 1012;
         switch (i) {
             case 0:
                 i2 = 1000;
@@ -1284,44 +1298,78 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 break;
             case 2:
             case 4:
+                i2 = 1004;
                 break;
             case QtNative.IdRightHandle /* 3 */:
                 i2 = 1007;
                 break;
             case 5:
-            case SDL_SYSTEM_CURSOR_WINDOW_TOPLEFT /* 12 */:
-            case SDL_SYSTEM_CURSOR_WINDOW_BOTTOMRIGHT /* 16 */:
+            case SDL_SYSTEM_CURSOR_NW_RESIZE /* 12 */:
+            case SDL_SYSTEM_CURSOR_SE_RESIZE /* 16 */:
                 i2 = 1017;
                 break;
-            case SDL_SYSTEM_CURSOR_SIZENESW /* 6 */:
-            case SDL_SYSTEM_CURSOR_WINDOW_TOPRIGHT /* 14 */:
-            case SDL_SYSTEM_CURSOR_WINDOW_BOTTOMLEFT /* 18 */:
+            case SDL_SYSTEM_CURSOR_NESW_RESIZE /* 6 */:
+            case SDL_SYSTEM_CURSOR_NE_RESIZE /* 14 */:
+            case SDL_SYSTEM_CURSOR_SW_RESIZE /* 18 */:
                 i2 = 1016;
                 break;
-            case SDL_SYSTEM_CURSOR_SIZEWE /* 7 */:
-            case SDL_SYSTEM_CURSOR_WINDOW_RIGHT /* 15 */:
-            case SDL_SYSTEM_CURSOR_WINDOW_LEFT /* 19 */:
+            case SDL_SYSTEM_CURSOR_EW_RESIZE /* 7 */:
+            case SDL_SYSTEM_CURSOR_E_RESIZE /* 15 */:
+            case SDL_SYSTEM_CURSOR_W_RESIZE /* 19 */:
+            case SDL_SYSTEM_CURSOR_COL_RESIZE /* 29 */:
                 i2 = 1014;
                 break;
             case 8:
-            case SDL_SYSTEM_CURSOR_WINDOW_TOP /* 13 */:
-            case SDL_SYSTEM_CURSOR_WINDOW_BOTTOM /* 17 */:
+            case SDL_SYSTEM_CURSOR_N_RESIZE /* 13 */:
+            case SDL_SYSTEM_CURSOR_S_RESIZE /* 17 */:
+            case SDL_SYSTEM_CURSOR_ROW_RESIZE /* 30 */:
                 i2 = 1015;
                 break;
-            case SDL_SYSTEM_CURSOR_SIZEALL /* 9 */:
+            case SDL_SYSTEM_CURSOR_MOVE /* 9 */:
+            case SDL_SYSTEM_CURSOR_GRAB /* 27 */:
                 i2 = 1020;
                 break;
-            case SDL_SYSTEM_CURSOR_NO /* 10 */:
-                i2 = 1012;
+            case SDL_SYSTEM_CURSOR_NOT_ALLOWED /* 10 */:
+            case SDL_SYSTEM_CURSOR_NO_DROP /* 26 */:
                 break;
-            case SDL_SYSTEM_CURSOR_HAND /* 11 */:
+            case SDL_SYSTEM_CURSOR_POINTER /* 11 */:
                 i2 = 1002;
+                break;
+            case SDL_SYSTEM_CURSOR_CONTEXT_MENU /* 20 */:
+                i2 = 1001;
+                break;
+            case SDL_SYSTEM_CURSOR_HELP /* 21 */:
+                i2 = 1003;
+                break;
+            case SDL_SYSTEM_CURSOR_CELL /* 22 */:
+                i2 = 1006;
+                break;
+            case SDL_SYSTEM_CURSOR_VERTICAL_TEXT /* 23 */:
+                i2 = 1009;
+                break;
+            case SDL_SYSTEM_CURSOR_ALIAS /* 24 */:
+                i2 = 1010;
+                break;
+            case SDL_SYSTEM_CURSOR_COPY /* 25 */:
+                i2 = 1011;
+                break;
+            case SDL_SYSTEM_CURSOR_GRABBING /* 28 */:
+                i2 = 1021;
+                break;
+            case SDL_SYSTEM_CURSOR_ALL_SCROLL /* 31 */:
+                i2 = 1013;
+                break;
+            case SDL_SYSTEM_CURSOR_ZOOM_IN /* 32 */:
+                i2 = 1018;
+                break;
+            case SDL_SYSTEM_CURSOR_ZOOM_OUT /* 33 */:
+                i2 = 1019;
                 break;
             default:
                 i2 = 0;
                 break;
         }
-        if (Build.VERSION.SDK_INT < 24) {
+        if (Build.VERSION.SDK_INT < SDL_SYSTEM_CURSOR_ALIAS) {
             return true;
         }
         try {
@@ -1333,7 +1381,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     public static void requestPermission(String str, int i) {
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT < SDL_SYSTEM_CURSOR_VERTICAL_TEXT) {
             nativePermissionResult(i, true);
             return;
         }
@@ -1483,7 +1531,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     public static String getPreferredLocales() {
         String str = "";
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= SDL_SYSTEM_CURSOR_ALIAS) {
             LocaleList adjustedDefault = LocaleList.getAdjustedDefault();
             for (int i = 0; i < adjustedDefault.size(); i++) {
                 if (i != 0) {
