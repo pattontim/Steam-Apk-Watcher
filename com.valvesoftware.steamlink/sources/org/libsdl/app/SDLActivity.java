@@ -53,6 +53,9 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     protected static final int COMMAND_SET_KEEP_SCREEN_ON = 5;
     protected static final int COMMAND_TEXTEDIT_HIDE = 3;
     protected static final int COMMAND_USER = 32768;
+    private static final int SDL_FILEDIALOG_OPENFILE = 0;
+    private static final int SDL_FILEDIALOG_OPENFOLDER = 2;
+    private static final int SDL_FILEDIALOG_SAVEFILE = 1;
     private static final int SDL_MAJOR_VERSION = 3;
     private static final int SDL_MICRO_VERSION = 0;
     private static final int SDL_MINOR_VERSION = 5;
@@ -612,7 +615,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if (sDLFileDialogState == null || sDLFileDialogState.requestCode != i) {
             return;
         }
-        if (intent != null) {
+        if (intent != null && i2 == -1) {
             Uri data = intent.getData();
             if (data == null) {
                 ClipData clipData = intent.getClipData();
@@ -622,6 +625,9 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                     strArr[i3] = clipData.getItemAt(i3).getUri().toString();
                 }
             } else {
+                if (mFileDialogState.type == 2 && mFileDialogState.persistable) {
+                    mSingleton.getContentResolver().takePersistableUriPermission(data, 3);
+                }
                 strArr = new String[]{data.toString()};
             }
         } else {
@@ -1472,23 +1478,30 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         }
     }
 
-    public static boolean showFileDialog(String[] strArr, boolean z, boolean z2, int i) {
+    /* JADX WARN: Removed duplicated region for block: B:43:0x0094  */
+    /* JADX WARN: Removed duplicated region for block: B:49:0x00c5  */
+    /* JADX WARN: Removed duplicated region for block: B:54:0x00d0  */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+    */
+    public static boolean showFileDialog(String[] strArr, boolean z, int i, String str, int i2) {
+        Uri uri;
+        String str2;
+        String str3;
+        boolean z2;
         if (mSingleton == null) {
             return false;
         }
-        if (z2) {
-            z = false;
-        }
         ArrayList arrayList = new ArrayList();
         MimeTypeMap singleton = MimeTypeMap.getSingleton();
-        if (strArr != null) {
-            for (String str : strArr) {
-                String[] strArrSplit = str.split(";");
+        if (strArr != null && i != 2) {
+            for (String str4 : strArr) {
+                String[] strArrSplit = str4.split(";");
                 if (strArrSplit.length == 1 && strArrSplit[0].equals("*")) {
                     arrayList.add("*/*");
                 } else {
-                    for (String str2 : strArrSplit) {
-                        String mimeTypeFromExtension = singleton.getMimeTypeFromExtension(str2);
+                    for (String str5 : strArrSplit) {
+                        String mimeTypeFromExtension = singleton.getMimeTypeFromExtension(str5);
                         if (mimeTypeFromExtension != null) {
                             arrayList.add(mimeTypeFromExtension);
                         }
@@ -1496,34 +1509,81 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 }
             }
         }
-        Intent intent = new Intent(z2 ? "android.intent.action.CREATE_DOCUMENT" : "android.intent.action.OPEN_DOCUMENT");
-        intent.addCategory("android.intent.category.OPENABLE");
-        intent.putExtra("android.intent.extra.ALLOW_MULTIPLE", z);
-        int size = arrayList.size();
-        if (size == 0) {
-            intent.setType("*/*");
-        } else if (size == 1) {
-            intent.setType((String) arrayList.get(0));
+        if (str == null || str.isEmpty()) {
+            uri = null;
         } else {
-            intent.setType("*/*");
-            intent.putExtra("android.intent.extra.MIME_TYPES", (String[]) arrayList.toArray(new String[0]));
+            try {
+                uri = Uri.parse(str);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to parse initial path URI, ignoring initial path", e);
+                uri = null;
+            }
         }
+        boolean zNativeGetHintBoolean = nativeGetHintBoolean("SDL_ANDROID_ALLOW_PERSISTENT_FOLDER_ACCESS", false);
         try {
-            mSingleton.startActivityForResult(intent, i);
-            SDLFileDialogState sDLFileDialogState = new SDLFileDialogState();
-            mFileDialogState = sDLFileDialogState;
-            sDLFileDialogState.requestCode = i;
-            mFileDialogState.multipleChoice = z;
+            if (i == 0) {
+                str2 = "android.intent.action.OPEN_DOCUMENT";
+            } else {
+                if (i == 1) {
+                    str3 = "android.intent.action.CREATE_DOCUMENT";
+                    z2 = false;
+                    Intent intent = new Intent(str3);
+                    if (i == 2) {
+                        intent.addCategory("android.intent.category.OPENABLE");
+                        intent.putExtra("android.intent.extra.ALLOW_MULTIPLE", z2);
+                        int size = arrayList.size();
+                        if (size == 0) {
+                            intent.setType("*/*");
+                        } else if (size == 1) {
+                            intent.setType((String) arrayList.get(0));
+                        } else {
+                            intent.setType("*/*");
+                            intent.putExtra("android.intent.extra.MIME_TYPES", (String[]) arrayList.toArray(new String[0]));
+                        }
+                    } else {
+                        intent.addFlags(zNativeGetHintBoolean ? 195 : 3);
+                    }
+                    if (uri != null) {
+                        intent.putExtra("android.provider.extra.INITIAL_URI", uri);
+                    }
+                    mSingleton.startActivityForResult(intent, i2);
+                    SDLFileDialogState sDLFileDialogState = new SDLFileDialogState();
+                    mFileDialogState = sDLFileDialogState;
+                    sDLFileDialogState.requestCode = i2;
+                    mFileDialogState.type = i;
+                    mFileDialogState.persistable = zNativeGetHintBoolean;
+                    return true;
+                }
+                if (i != 2) {
+                    Log.e(TAG, "Unsupported file dialog type: " + i);
+                    return false;
+                }
+                str2 = "android.intent.action.OPEN_DOCUMENT_TREE";
+            }
+            mSingleton.startActivityForResult(intent, i2);
+            SDLFileDialogState sDLFileDialogState2 = new SDLFileDialogState();
+            mFileDialogState = sDLFileDialogState2;
+            sDLFileDialogState2.requestCode = i2;
+            mFileDialogState.type = i;
+            mFileDialogState.persistable = zNativeGetHintBoolean;
             return true;
-        } catch (ActivityNotFoundException e) {
-            Log.e(TAG, "Unable to open file dialog.", e);
+        } catch (ActivityNotFoundException e2) {
+            Log.e(TAG, "Unable to open dialog.", e2);
             return false;
+        }
+        str3 = str2;
+        z2 = z;
+        Intent intent2 = new Intent(str3);
+        if (i == 2) {
+        }
+        if (uri != null) {
         }
     }
 
     static class SDLFileDialogState {
-        boolean multipleChoice;
+        boolean persistable;
         int requestCode;
+        int type;
 
         SDLFileDialogState() {
         }

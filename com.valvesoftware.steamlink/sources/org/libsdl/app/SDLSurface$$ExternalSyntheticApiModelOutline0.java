@@ -27,12 +27,4 @@ public final /* synthetic */ class SDLSurface$$ExternalSyntheticApiModelOutline0
     public static /* bridge */ /* synthetic */ PointerIcon m29m(Object obj) {
         return (PointerIcon) obj;
     }
-
-    /* JADX INFO: renamed from: m */
-    public static /* synthetic */ void m34m() {
-    }
-
-    /* JADX INFO: renamed from: m$1, reason: collision with other method in class */
-    public static /* synthetic */ void m53m$1() {
-    }
 }
