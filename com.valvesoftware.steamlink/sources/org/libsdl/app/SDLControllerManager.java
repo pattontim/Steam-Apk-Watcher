@@ -57,13 +57,8 @@ public class SDLControllerManager {
         mJoystickHandler.setLED(i, i2, i3, i4);
     }
 
-    static void joystickSetSensorsEnabled(final int i, final boolean z) {
-        SDL.getContext().runOnUiThread(new Runnable() { // from class: org.libsdl.app.SDLControllerManager.1
-            @Override // java.lang.Runnable
-            public void run() {
-                SDLControllerManager.mJoystickHandler.setSensorsEnabled(i, z);
-            }
-        });
+    static void joystickSetSensorsEnabled(int i, boolean z) {
+        mJoystickHandler.setSensorsEnabled(i, z);
     }
 
     static void pollHapticDevices() {

@@ -22,6 +22,7 @@ class HIDDeviceUSB implements HIDDevice {
     protected HIDDeviceManager mManager;
     protected UsbEndpoint mOutputEndpoint;
     protected boolean mRunning = false;
+    protected boolean mClaimed = false;
 
     @Override // org.libsdl.app.HIDDevice
     public int getVersion() {
@@ -101,6 +102,7 @@ class HIDDeviceUSB implements HIDDevice {
             close();
             return false;
         }
+        this.mClaimed = true;
         for (int i = 0; i < usbInterface.getEndpointCount(); i++) {
             UsbEndpoint endpoint = usbInterface.getEndpoint(i);
             int direction = endpoint.getDirection();
@@ -114,6 +116,7 @@ class HIDDeviceUSB implements HIDDevice {
         }
         if (this.mInputEndpoint == null) {
             Log.w(TAG, "Missing required endpoint on USB device " + getDeviceName());
+            this.mConnection.releaseInterface(usbInterface);
             close();
             return false;
         }
@@ -132,6 +135,10 @@ class HIDDeviceUSB implements HIDDevice {
         UsbDeviceConnection usbDeviceConnection = this.mConnection;
         if (usbDeviceConnection == null) {
             Log.w(TAG, "writeReport() called with no device connection");
+            return -1;
+        }
+        if (!this.mClaimed) {
+            Log.w(TAG, "writeReport() called but some other process currently owns the USB device");
             return -1;
         }
         if (z) {
@@ -177,6 +184,9 @@ class HIDDeviceUSB implements HIDDevice {
             Log.w(TAG, "readReport() called with no device connection");
             return false;
         }
+        if (!this.mClaimed) {
+            return !z;
+        }
         if (b == 0) {
             i2--;
             i = 1;
@@ -213,9 +223,12 @@ class HIDDeviceUSB implements HIDDevice {
             this.mInputThread = null;
         }
         if (this.mConnection != null) {
-            this.mConnection.releaseInterface(this.mDevice.getInterface(this.mInterfaceIndex));
+            if (this.mClaimed) {
+                this.mConnection.releaseInterface(this.mDevice.getInterface(this.mInterfaceIndex));
+            }
             this.mConnection.close();
             this.mConnection = null;
+            this.mClaimed = false;
         }
     }
 
@@ -228,6 +241,25 @@ class HIDDeviceUSB implements HIDDevice {
     @Override // org.libsdl.app.HIDDevice
     public void setFrozen(boolean z) {
         this.mFrozen = z;
+        if (this.mConnection == null || this.mClaimed != z) {
+            return;
+        }
+        UsbInterface usbInterface = this.mDevice.getInterface(this.mInterfaceIndex);
+        if (z) {
+            boolean zReleaseInterface = this.mConnection.releaseInterface(usbInterface);
+            this.mClaimed = !zReleaseInterface;
+            if (zReleaseInterface) {
+                return;
+            }
+            Log.e(TAG, "Tried to release claim on USB device, but failed!");
+            return;
+        }
+        boolean zClaimInterface = this.mConnection.claimInterface(usbInterface, true);
+        this.mClaimed = zClaimInterface;
+        if (zClaimInterface) {
+            return;
+        }
+        Log.e(TAG, "Tried to regain claim on USB device, but failed!");
     }
 
     protected class InputThread extends Thread {

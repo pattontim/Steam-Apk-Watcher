@@ -58,6 +58,15 @@ public class SteamShellActivity extends QtActivity {
         }
     }
 
+    @Override // org.qtproject.qt5.android.bindings.QtActivity, android.app.Activity, android.view.Window.Callback
+    public void onWindowFocusChanged(boolean z) {
+        HIDDeviceManager hIDDeviceManager;
+        super.onWindowFocusChanged(z);
+        if ((z || !SDLActivity.nativeGetHintBoolean("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", false)) && (hIDDeviceManager = this.mHIDDeviceManager) != null) {
+            hIDDeviceManager.setFrozen(!z);
+        }
+    }
+
     @Override // org.qtproject.qt5.android.bindings.QtActivity, android.app.Activity
     public void onResume() {
         super.onResume();

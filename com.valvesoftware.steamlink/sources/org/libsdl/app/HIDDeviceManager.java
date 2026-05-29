@@ -73,7 +73,7 @@ public class HIDDeviceManager {
 
     private native void HIDDeviceReleaseCallback();
 
-    native void HIDDeviceConnected(int i, String str, int i2, int i3, String str2, int i4, String str3, String str4, int i5, int i6, int i7, int i8, boolean z);
+    native void HIDDeviceConnected(int i, String str, int i2, int i3, String str2, int i4, String str3, String str4, int i5, int i6, int i7, int i8, boolean z, int i9);
 
     native void HIDDeviceDisconnected(int i);
 
@@ -228,24 +228,31 @@ public class HIDDeviceManager {
     }
 
     private void connectHIDDeviceUSB(UsbDevice usbDevice) {
+        int i;
         HIDDeviceManager hIDDeviceManager = this;
         synchronized (this) {
-            int i = 0;
             int i2 = 0;
+            int i3 = 0;
             while (i2 < usbDevice.getInterfaceCount()) {
                 UsbInterface usbInterface = usbDevice.getInterface(i2);
                 if (hIDDeviceManager.isHIDDeviceInterface(usbDevice, usbInterface)) {
                     int id = 1 << usbInterface.getId();
-                    if ((i & id) == 0) {
-                        int i3 = i | id;
+                    if ((i3 & id) != 0) {
+                        i = i2;
+                    } else {
+                        int i4 = i3 | id;
                         HIDDeviceUSB hIDDeviceUSB = new HIDDeviceUSB(hIDDeviceManager, usbDevice, i2);
+                        int i5 = i2;
                         int id2 = hIDDeviceUSB.getId();
                         hIDDeviceManager.mDevicesById.put(Integer.valueOf(id2), hIDDeviceUSB);
-                        hIDDeviceManager.HIDDeviceConnected(id2, hIDDeviceUSB.getIdentifier(), hIDDeviceUSB.getVendorId(), hIDDeviceUSB.getProductId(), hIDDeviceUSB.getSerialNumber(), hIDDeviceUSB.getVersion(), hIDDeviceUSB.getManufacturerName(), hIDDeviceUSB.getProductName(), usbInterface.getId(), usbInterface.getInterfaceClass(), usbInterface.getInterfaceSubclass(), usbInterface.getInterfaceProtocol(), false);
-                        i = i3;
+                        i = i5;
+                        hIDDeviceManager.HIDDeviceConnected(id2, hIDDeviceUSB.getIdentifier(), hIDDeviceUSB.getVendorId(), hIDDeviceUSB.getProductId(), hIDDeviceUSB.getSerialNumber(), hIDDeviceUSB.getVersion(), hIDDeviceUSB.getManufacturerName(), hIDDeviceUSB.getProductName(), usbInterface.getId(), usbInterface.getInterfaceClass(), usbInterface.getInterfaceSubclass(), usbInterface.getInterfaceProtocol(), false, 0);
+                        i3 = i4;
                     }
+                } else {
+                    i = i2;
                 }
-                i2++;
+                i2 = i + 1;
                 hIDDeviceManager = this;
             }
         }

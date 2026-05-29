@@ -7,7 +7,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -260,10 +259,10 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, V
     protected void enableSensor(int i, boolean z) {
         if (z) {
             SensorManager sensorManager = this.mSensorManager;
-            sensorManager.registerListener(this, sensorManager.getDefaultSensor(i), 1, (Handler) null);
+            SDLSensorManager.registerListener(sensorManager, this, sensorManager.getDefaultSensor(i), 1);
         } else {
             SensorManager sensorManager2 = this.mSensorManager;
-            sensorManager2.unregisterListener(this, sensorManager2.getDefaultSensor(i));
+            SDLSensorManager.unregisterListener(sensorManager2, this, sensorManager2.getDefaultSensor(i));
         }
     }
 

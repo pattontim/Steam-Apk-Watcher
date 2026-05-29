@@ -520,8 +520,12 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     @Override // android.app.Activity, android.view.Window.Callback
     public void onWindowFocusChanged(boolean z) {
+        HIDDeviceManager hIDDeviceManager;
         super.onWindowFocusChanged(z);
         Log.v(TAG, "onWindowFocusChanged(): " + z);
+        if ((z || !nativeGetHintBoolean("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", false)) && (hIDDeviceManager = mHIDDeviceManager) != null) {
+            hIDDeviceManager.setFrozen(!z);
+        }
         if (mBrokenLibraries) {
             return;
         }
@@ -1063,7 +1067,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if (source == 0 && (device = InputDevice.getDevice(deviceId)) != null) {
             source = device.getSources();
         }
-        if (SDLControllerManager.isDeviceSDLJoystick(deviceId) && keyEvent.getRepeatCount() == 0) {
+        if (SDLControllerManager.isDeviceSDLJoystick(deviceId)) {
             if (keyEvent.getAction() == 0) {
                 if (SDLControllerManager.onNativePadDown(deviceId, i, keyEvent.getScanCode())) {
                     return true;

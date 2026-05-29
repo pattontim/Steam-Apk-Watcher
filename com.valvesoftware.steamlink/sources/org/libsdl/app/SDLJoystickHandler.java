@@ -8,12 +8,12 @@ import android.hardware.lights.LightState;
 import android.hardware.lights.LightsManager;
 import android.hardware.lights.LightsRequest;
 import android.os.Build;
-import android.os.Handler;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -91,11 +91,12 @@ class SDLJoystickHandler {
                 sDLJoystick.desc = getJoystickDescriptor(device);
                 sDLJoystick.axes = new ArrayList<>();
                 sDLJoystick.hats = new ArrayList<>();
+                HashSet hashSet = new HashSet();
                 sDLJoystick.lights = new ArrayList<>();
                 List<InputDevice.MotionRange> motionRanges = device.getMotionRanges();
                 Collections.sort(motionRanges, new RangeComparator());
                 for (InputDevice.MotionRange motionRange : motionRanges) {
-                    if ((motionRange.getSource() & 16) != 0) {
+                    if ((motionRange.getSource() & 16) != 0 && hashSet.add(Integer.valueOf(motionRange.getAxis()))) {
                         if (motionRange.getAxis() == 15 || motionRange.getAxis() == 16) {
                             sDLJoystick.hats.add(motionRange);
                         } else {
@@ -283,19 +284,19 @@ class SDLJoystickHandler {
         }
         if (z) {
             if (joystick.accelerometerSensor != null) {
-                joystick.sensorManager.registerListener(joystick.sensorListener, joystick.accelerometerSensor, 1, (Handler) null);
+                SDLSensorManager.registerListener(joystick.sensorManager, joystick.sensorListener, joystick.accelerometerSensor, 1);
             }
             if (joystick.gyroscopeSensor != null) {
-                joystick.sensorManager.registerListener(joystick.sensorListener, joystick.gyroscopeSensor, 1, (Handler) null);
+                SDLSensorManager.registerListener(joystick.sensorManager, joystick.sensorListener, joystick.gyroscopeSensor, 1);
                 return;
             }
             return;
         }
         if (joystick.accelerometerSensor != null) {
-            joystick.sensorManager.unregisterListener(joystick.sensorListener, joystick.accelerometerSensor);
+            SDLSensorManager.unregisterListener(joystick.sensorManager, joystick.sensorListener, joystick.accelerometerSensor);
         }
         if (joystick.gyroscopeSensor != null) {
-            joystick.sensorManager.unregisterListener(joystick.sensorListener, joystick.gyroscopeSensor);
+            SDLSensorManager.unregisterListener(joystick.sensorManager, joystick.sensorListener, joystick.gyroscopeSensor);
         }
     }
 }
