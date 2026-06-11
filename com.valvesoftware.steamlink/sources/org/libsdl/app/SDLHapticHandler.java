@@ -39,7 +39,7 @@ class SDLHapticHandler {
         }
     }
 
-    synchronized void pollHapticDevices() {
+    synchronized void detectHapticDevices() {
         boolean zHasVibrator;
         Vibrator vibrator = (Vibrator) SDL.getContext().getSystemService("vibrator");
         if (vibrator != null) {

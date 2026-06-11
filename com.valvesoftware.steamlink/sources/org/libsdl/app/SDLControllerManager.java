@@ -1,5 +1,6 @@
 package org.libsdl.app;
 
+import android.hardware.input.InputManager;
 import android.os.Build;
 import android.view.InputDevice;
 import android.view.MotionEvent;
@@ -7,6 +8,7 @@ import android.view.MotionEvent;
 /* JADX INFO: loaded from: classes.dex */
 public class SDLControllerManager {
     private static final String TAG = "SDLControllerManager";
+    protected static SDLDeviceListener mDeviceListener;
     protected static SDLHapticHandler mHapticHandler;
     protected static SDLJoystickHandler mJoystickHandler;
 
@@ -45,12 +47,26 @@ public class SDLControllerManager {
         }
     }
 
+    public static void initializeDeviceListener() {
+        if (mDeviceListener == null) {
+            mDeviceListener = new SDLDeviceListener();
+            ((InputManager) SDL.getContext().getSystemService("input")).registerInputDeviceListener(mDeviceListener, null);
+        }
+    }
+
+    public static void shutdownDeviceListener() {
+        if (mDeviceListener != null) {
+            ((InputManager) SDL.getContext().getSystemService("input")).unregisterInputDeviceListener(mDeviceListener);
+            mDeviceListener = null;
+        }
+    }
+
     public static boolean handleJoystickMotionEvent(MotionEvent motionEvent) {
         return mJoystickHandler.handleMotionEvent(motionEvent);
     }
 
-    static void pollInputDevices() {
-        mJoystickHandler.pollInputDevices();
+    static void detectDevices() {
+        mJoystickHandler.detectDevices();
     }
 
     static void joystickSetLED(int i, int i2, int i3, int i4) {
@@ -61,8 +77,8 @@ public class SDLControllerManager {
         mJoystickHandler.setSensorsEnabled(i, z);
     }
 
-    static void pollHapticDevices() {
-        mHapticHandler.pollHapticDevices();
+    static void detectHapticDevices() {
+        mHapticHandler.detectHapticDevices();
     }
 
     static void hapticRun(int i, float f, int i2) {
@@ -77,12 +93,15 @@ public class SDLControllerManager {
         mHapticHandler.stop(i);
     }
 
-    public static boolean isDeviceSDLJoystick(int i) {
-        InputDevice device = InputDevice.getDevice(i);
-        if (device == null || i < 0) {
+    public static boolean isDeviceSDLJoystick(InputDevice inputDevice) {
+        if (inputDevice == null || inputDevice.isVirtual()) {
             return false;
         }
-        int sources = device.getSources();
+        int sources = inputDevice.getSources();
         return (sources & 16) != 0 || (sources & 513) == 513 || (sources & 1025) == 1025;
+    }
+
+    public static boolean isDeviceSDLJoystick(int i) {
+        return isDeviceSDLJoystick(InputDevice.getDevice(i));
     }
 }

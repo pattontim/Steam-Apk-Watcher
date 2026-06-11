@@ -41,10 +41,12 @@ public class SteamShellActivity extends QtActivity {
     protected void startActivity() {
         SDL.initialize();
         SDL.setContext(this);
+        SDLControllerManager.initializeDeviceListener();
     }
 
     protected void stopActivity() {
         if (SDL.getContext() == this) {
+            SDLControllerManager.shutdownDeviceListener();
             SDL.setContext(null);
         }
     }

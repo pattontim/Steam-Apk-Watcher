@@ -268,32 +268,29 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, V
 
     @Override // android.hardware.SensorEventListener
     public void onSensorChanged(SensorEvent sensorEvent) {
-        float f;
-        float f2;
         if (sensorEvent.sensor.getType() == 1) {
             int rotation = this.mDisplay.getRotation();
             int i = 0;
             if (rotation == 1) {
-                f = -sensorEvent.values[1];
-                f2 = sensorEvent.values[0];
+                float f = sensorEvent.values[1];
+                float f2 = sensorEvent.values[0];
                 i = 90;
             } else if (rotation == 2) {
-                f = -sensorEvent.values[0];
-                f2 = -sensorEvent.values[1];
+                float f3 = sensorEvent.values[0];
+                float f4 = sensorEvent.values[1];
                 i = 180;
             } else if (rotation != 3) {
-                f = sensorEvent.values[0];
-                f2 = sensorEvent.values[1];
+                float f5 = sensorEvent.values[0];
+                float f6 = sensorEvent.values[1];
             } else {
-                f = sensorEvent.values[1];
-                f2 = -sensorEvent.values[0];
+                float f7 = sensorEvent.values[1];
+                float f8 = sensorEvent.values[0];
                 i = 270;
             }
             if (i != SDLActivity.mCurrentRotation) {
                 SDLActivity.mCurrentRotation = i;
                 SDLActivity.onNativeRotationChanged(i);
             }
-            SDLActivity.onNativeAccel((-f) / 9.80665f, f2 / 9.80665f, sensorEvent.values[2] / 9.80665f);
         }
     }
 

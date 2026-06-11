@@ -177,8 +177,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     public static native void nativeSetupJNI();
 
-    public static native void onNativeAccel(float f, float f2, float f3);
-
     public static native void onNativeClipboardChanged();
 
     public static native void onNativeDarkModeChanged(boolean z);
@@ -392,6 +390,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         SDL.initialize();
         mSingleton = this;
         SDL.setContext(this);
+        SDLControllerManager.initializeDeviceListener();
         mClipboardHandler = new SDLClipboardHandler();
         mHIDDeviceManager = HIDDeviceManager.acquire(this);
         mSurface = createSDLSurface(this);
@@ -1061,13 +1060,13 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     public static boolean handleKeyEvent(View view, int i, KeyEvent keyEvent, InputConnection inputConnection) {
         int action;
-        InputDevice device;
         int deviceId = keyEvent.getDeviceId();
         int source = keyEvent.getSource();
-        if (source == 0 && (device = InputDevice.getDevice(deviceId)) != null) {
+        InputDevice device = InputDevice.getDevice(deviceId);
+        if (source == 0 && device != null) {
             source = device.getSources();
         }
-        if (SDLControllerManager.isDeviceSDLJoystick(deviceId)) {
+        if (SDLControllerManager.isDeviceSDLJoystick(device)) {
             if (keyEvent.getAction() == 0) {
                 if (SDLControllerManager.onNativePadDown(deviceId, i, keyEvent.getScanCode())) {
                     return true;

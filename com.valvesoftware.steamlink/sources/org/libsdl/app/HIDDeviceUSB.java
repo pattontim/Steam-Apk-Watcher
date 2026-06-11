@@ -61,7 +61,7 @@ class HIDDeviceUSB implements HIDDevice {
         String serialNumber;
         try {
             serialNumber = this.mDevice.getSerialNumber();
-        } catch (SecurityException unused) {
+        } catch (Exception unused) {
             serialNumber = null;
         }
         return serialNumber == null ? "" : serialNumber;
