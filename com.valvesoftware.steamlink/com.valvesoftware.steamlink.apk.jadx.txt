@@ -1,9 +1,9 @@
-5d915fd79261cd91a1186e6cc5182ce0  com.valvesoftware.steamlink/com.valvesoftware.steamlink.apk
-4d771986d8b56cadf9a1d91e8b2d0cac  com.valvesoftware.steamlink/com.valvesoftware.steamlink.apk.jadx.txt
-640250e64359480e0aa8de2c647b669e  com.valvesoftware.steamlink/resources/AndroidManifest.xml
-d3d833edbf7233412ad8e2b0dcac055d  com.valvesoftware.steamlink/resources/META-INF/BNDLTOOL.RSA
-71119bcbe86ef01e5d10a25931fe7669  com.valvesoftware.steamlink/resources/META-INF/BNDLTOOL.SF
-44c240f8c30e12d926424136f20968af  com.valvesoftware.steamlink/resources/META-INF/MANIFEST.MF
+3f3f47cbf52cb8e338dd774c50726a3c  com.valvesoftware.steamlink/com.valvesoftware.steamlink.apk
+06811a5b72c81ccbb2d61c0f35ff72f6  com.valvesoftware.steamlink/com.valvesoftware.steamlink.apk.jadx.txt
+b4df2f5de242e6a5cd455ac8cc830a11  com.valvesoftware.steamlink/resources/AndroidManifest.xml
+5f38bf3f935babd2717df88dff2b8a14  com.valvesoftware.steamlink/resources/META-INF/BNDLTOOL.RSA
+7acd1719f5b5a557a7ed7a3d71acd81e  com.valvesoftware.steamlink/resources/META-INF/BNDLTOOL.SF
+04a1d26637c42872cc44125281889d81  com.valvesoftware.steamlink/resources/META-INF/MANIFEST.MF
 9589fbd933dbd0e500038b6b6423f621  com.valvesoftware.steamlink/resources/META-INF/com/android/build/gradle/app-metadata.properties
 6e4c205b0514417cb06c7b2e2cb37738  com.valvesoftware.steamlink/resources/META-INF/version-control-info.textproto
 2e41a6d72d12972c5e99298f83cdc773  com.valvesoftware.steamlink/resources/org/kde/necessitas/ministro/IMinistro.aidl
@@ -59,7 +59,7 @@ ac582b3e65201965dd7243ab6b67890d  com.valvesoftware.steamlink/sources/com/getkee
 bd8a753ac5fa3fea8bc7dce54533289d  com.valvesoftware.steamlink/sources/com/getkeepsafe/relinker/elf/Program64Header.java
 a20783d96b1159045c9129dbb80cf57d  com.valvesoftware.steamlink/sources/com/getkeepsafe/relinker/elf/Section32Header.java
 64c4cf1f10cb2cf8daa777ececf13f79  com.valvesoftware.steamlink/sources/com/getkeepsafe/relinker/elf/Section64Header.java
-88f5b9498b9468987fa7a33625258d34  com.valvesoftware.steamlink/sources/com/valvesoftware/steamlink/BuildConfig.java
+e24c70a711ba721edcbe696de674afe7  com.valvesoftware.steamlink/sources/com/valvesoftware/steamlink/BuildConfig.java
 a0c0a378dcf8a65a20c206840fffa793  com.valvesoftware.steamlink/sources/com/valvesoftware/steamlink/C0003R.java
 1af2f9758e680b8764e510ca66ae98f7  com.valvesoftware.steamlink/sources/com/valvesoftware/steamlink/SteamLink.java
 28d7d28cdb8e546f38041ba5a2561263  com.valvesoftware.steamlink/sources/com/valvesoftware/steamlink/SteamLinkUtils.java
